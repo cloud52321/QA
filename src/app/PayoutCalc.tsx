@@ -325,7 +325,7 @@ const TG112Calc: React.FC = () => {
                         {floor2(dispCumulative * bet).toFixed(2)}
                       </td>
                       <td className="px-3 py-2.5 text-center">
-                        {h.odds !== null && (
+                        {h.oddsRaw !== null && (
                           <input type="checkbox" checked={h.extraPay} onChange={() => toggleExtraPay(h.id)}
                             className="w-4 h-4 accent-amber-400 cursor-pointer" />
                         )}
