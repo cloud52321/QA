@@ -38,7 +38,7 @@ type Row = { key: string; copyValue: string; note?: string };
 type Card = { label: string; rows: Row[] };
 type Section = {
   heading: string;
-  items: { text: string; links?: { label: string; url: string }[] }[];
+  items: { text: string; links?: { label: string; url: string }[]; note?: string }[];
 };
 type Announcement =
   | { id: number; title: string; type: 'account'; cards: Card[] }
