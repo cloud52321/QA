@@ -65,7 +65,6 @@ const LLMWiki: React.FC = () => {
   const modeTabs: { key: Mode; label: string }[] = [
     { key: 'project',  label: '依專案' },
     { key: 'category', label: '依類別' },
-    { key: 'function', label: '依功能' },
   ];
 
   const projectDocs = wikiDocs.filter(d =>
@@ -94,7 +93,7 @@ const LLMWiki: React.FC = () => {
           <span className="text-xs font-extrabold text-slate-100 tracking-wide">計算工具</span>
         </div>
         <div className="space-y-0.5">
-          {['Jackpot 計算', 'RTP 計算', '賠付計算', 'RTP 轉換'].map(name => (
+          {['賠付計算', 'RTP 轉換'].map(name => (
             <button
               key={name}
               onClick={() => { setToolPage('calc'); setCalcTool(name); }}
@@ -257,8 +256,8 @@ const LLMWiki: React.FC = () => {
         <div className="p-6 border-b border-slate-800/40 flex items-center justify-center">
           <style>{`@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');`}</style>
           <button onClick={goHome}>
-            <h1 style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive", fontSize: '1.6rem', fontWeight: 700, color: 'white', letterSpacing: '0.02em', lineHeight: 1.2 }}>
-              QA Team
+            <h1 style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive", fontSize: '1.3rem', fontWeight: 700, color: 'white', letterSpacing: '0.02em', lineHeight: 1.2 }}>
+              The Bug Hunter's Diary
             </h1>
           </button>
         </div>
