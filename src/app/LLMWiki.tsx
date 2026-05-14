@@ -314,24 +314,6 @@ const LLMWiki: React.FC = () => {
       </aside>
 
       <main className="flex-1 flex flex-col min-w-0 bg-[#0b0f1a]">
-        <header className="h-16 border-b border-slate-800/60 flex items-center justify-between px-8 bg-[#0b0f1a]/60 backdrop-blur-xl z-20 flex-shrink-0">
-          <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600" size={15} />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="搜尋文件..."
-              className="w-full bg-slate-900/40 border border-slate-800 rounded-xl py-2 pl-9 pr-4 text-sm focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/5 transition-all text-slate-200 placeholder:text-slate-600"
-            />
-          </div>
-          <div className="flex items-center gap-3">
-            <button className="bg-white text-slate-950 hover:bg-slate-200 px-4 py-2 rounded-xl text-xs font-bold transition-all">
-              建立文件
-            </button>
-          </div>
-        </header>
-
         <div className="flex-1 overflow-y-auto">
           <div className="w-full px-10 py-8">
             {renderContent()}
