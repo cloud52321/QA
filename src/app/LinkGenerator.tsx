@@ -47,8 +47,16 @@ export const LinkGenerator: React.FC = () => {
   const [room,     setRoom]      = useState(firstProject.roomPrefix);
   const [serial,   setSerial]    = useState('01');
   const [platform, setPlatform]  = useState<'h5' | 'pch5'>('h5');
+  const [stgPort,  setStgPort]   = useState('30907');
+  const [showAdv,  setShowAdv]   = useState(false);
   const [envGroups, setEnvGroups] = useState<EnvGroup[]>([]);
   const [generated, setGenerated] = useState(false);
+
+  const handleAccountChange = (val: string) => {
+    setAccount(val);
+    const match = val.match(/^C88test(\d+)$/i);
+    if (match) setToken(match[1]);
+  };
 
   const handleStudioChange = (s: string) => {
     setActiveStudio(s);
@@ -66,7 +74,7 @@ export const LinkGenerator: React.FC = () => {
     const query = `?account=${account}&token=${token}&roomid=${room}${serial}`;
     const urlMap: Record<string, string> = {
       DEV:  `http://${project.id}-game-client-frontend.trevi-dev.cc${path}${query}`,
-      STG:  `https://${project.id}-game-client.trevi-stage.cc:30904${path}${query}`,
+      STG:  `https://${project.id}-game-client.trevi-stage.cc:${stgPort}${path}${query}`,
       UAT:  `https://${project.id}-game-client.reelx.fun${path}${query}`,
       PROD: `https://prod-${project.id}-game-client.reelx.fun${path}${query}`,
     };
@@ -149,7 +157,7 @@ export const LinkGenerator: React.FC = () => {
             <p className="text-sm font-bold text-slate-300 border-b border-slate-800 pb-2">帳戶資訊</p>
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Account</label>
-              <input type="text" value={account} onChange={e => setAccount(e.target.value)} placeholder="帳號"
+              <input type="text" value={account} onChange={e => handleAccountChange(e.target.value)} placeholder="帳號"
                 className="w-full bg-slate-950/60 border border-amber-500/50 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all" />
             </div>
             <div className="space-y-1.5">
@@ -162,23 +170,44 @@ export const LinkGenerator: React.FC = () => {
           <div className="space-y-3 flex flex-col">
             <p className="text-sm font-bold text-slate-300 border-b border-slate-800 pb-2">房間設定</p>
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間前綴</label>
-              <input type="text" value={room} onChange={e => setRoom(e.target.value)} placeholder="例如：PP"
-                className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
-            </div>
-            <div className="space-y-1.5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間流水號</label>
               <input type="text" value={serial} onChange={e => setSerial(e.target.value)} placeholder="例如：01"
                 className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
             </div>
-            <button onClick={generate}
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all text-sm shadow-lg shadow-blue-900/30 flex items-center justify-center gap-2 mt-auto">
-              <Zap size={15} /> 立即生成連結
-            </button>
+
+            {/* 進階設定 toggle */}
+            <div>
+              <button
+                onClick={() => setShowAdv(v => !v)}
+                className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${showAdv ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' : 'bg-slate-800/60 border-slate-600 text-slate-300 hover:border-amber-500/40 hover:text-amber-400'}`}
+              >
+                <span className={`transition-transform duration-200 inline-block ${showAdv ? 'rotate-90' : ''}`}>⚙</span>
+                進階設定
+              </button>
+              {showAdv && (
+                <div className="mt-3 space-y-3 pl-3 border-l border-slate-700">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">STG Port</label>
+                    <input type="text" value={stgPort} onChange={e => setStgPort(e.target.value)} placeholder="30907"
+                      className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all font-mono" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間前綴</label>
+                    <input type="text" value={room} onChange={e => setRoom(e.target.value)} placeholder="例如：PP"
+                      className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
+                  </div>
+                </div>
+              )}
+            </div>
+
           </div>
 
         </div>
       </div>
+      <button onClick={generate}
+        className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all text-sm shadow-lg shadow-blue-900/30 flex items-center justify-center gap-2">
+        <Zap size={15} /> 立即生成連結
+      </button>
 
       {/* Results */}
       {generated && (
