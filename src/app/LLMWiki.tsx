@@ -280,7 +280,9 @@ const LLMWiki: React.FC = () => {
 
       {/* ── Col 1: Studio 主標題 ── */}
       <aside className="w-64 border-r border-slate-800/60 flex flex-col bg-[#131c30] flex-shrink-0">
-        <div className="p-5 border-b border-slate-800/40 flex items-center justify-center">
+
+        {/* Logo - 垂直置中在上半區 */}
+        <div className="flex items-center justify-center pt-8 pb-4">
           <style>{`@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');`}</style>
           <button onClick={goHome}>
             <h1 style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive", fontSize: '1.1rem', fontWeight: 700, color: 'white', letterSpacing: '0.02em', lineHeight: 1.2, textAlign: 'center' }}>
@@ -289,7 +291,8 @@ const LLMWiki: React.FC = () => {
           </button>
         </div>
 
-        <div className="px-3 pt-3 pb-2">
+        {/* 依專案 / 依類別 tab */}
+        <div className="px-3 pb-2">
           <div className="flex p-1 bg-slate-950/60 rounded-xl border border-slate-800/50 gap-0.5">
             {modeTabs.map(tab => (
               <button
@@ -317,11 +320,18 @@ const LLMWiki: React.FC = () => {
             ))}
           </div>
         </div>
+        <div className="mx-3 mb-2 h-px bg-slate-800/60" />
 
-        <div className="px-3 pb-2">
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-2 space-y-0.5 py-1">
+          {renderNav()}
+        </nav>
+
+        {/* 快捷工具 - 固定在底部 */}
+        <div className="px-3 py-3 border-t border-slate-800/60">
           <button
             onClick={() => { setIsToolbox(true); setShowHome(false); setSelectedGroup(''); setSelectedSubTitle(''); }}
-            className={`w-full py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all text-xs font-bold ${
+            className={`w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 transition-all text-xs font-bold ${
               isToolbox
                 ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-lg shadow-rose-900/30'
                 : 'bg-gradient-to-r from-blue-600/80 to-indigo-600/80 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-900/20'
@@ -331,11 +341,6 @@ const LLMWiki: React.FC = () => {
             快捷工具
           </button>
         </div>
-        <div className="mx-3 mb-2 h-px bg-slate-800/60" />
-
-        <nav className="flex-1 overflow-y-auto px-2 space-y-0.5 py-1">
-          {renderNav()}
-        </nav>
       </aside>
 
       {/* ── 內容區 ── */}
