@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from 'react';
-import { Search, Activity, FileText, Link2, ChevronDown } from 'lucide-react';
+import { Search, Activity, FileText, Link2 } from 'lucide-react';
 
 import {
   wikiDocs, studioGroups, WikiDoc, Mode,
@@ -115,34 +115,15 @@ const LLMWiki: React.FC = () => {
         {studioGroups.map(({ studio, projects }) => {
           const isActive = projects.includes(selectedProject);
           return (
-            <div key={studio}>
-              <button
-                onClick={() => handleProjectSelect(projects[0])}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
-              >
-                <span className={`text-sm font-extrabold tracking-wide ${isActive ? 'text-blue-300' : 'text-slate-100'}`}>
-                  <span className="text-yellow-400 mr-2">☆</span> {studio}
-                </span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${isActive ? 'text-blue-400 rotate-180' : 'text-slate-500'}`} />
-              </button>
-              {isActive && (
-                <div className="mb-1 space-y-0.5">
-                  {projects.map(p => (
-                    <button
-                      key={p}
-                      onClick={() => handleProjectSelect(p)}
-                      className={`w-full text-left pl-8 pr-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        selectedProject === p
-                          ? 'bg-blue-500/20 text-blue-200 font-extrabold text-sm ring-1 ring-inset ring-blue-400/50'
-                          : 'text-slate-500 hover:bg-slate-800/40 hover:text-slate-300'
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <button
+              key={studio}
+              onClick={() => handleProjectSelect(projects[0])}
+              className={`w-full flex items-center px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
+            >
+              <span className={`text-sm font-extrabold tracking-wide ${isActive ? 'text-blue-300' : 'text-slate-100'}`}>
+                <span className="text-yellow-400 mr-2">☆</span> {studio}
+              </span>
+            </button>
           );
         })}
       </>
@@ -150,46 +131,23 @@ const LLMWiki: React.FC = () => {
 
     if (mode === 'category') return (
       <>
-        {categoryStructure.map(({ section, titles }) => {
-          const isOpen = openSections.includes(section);
-          return (
-            <div key={section}>
-              <button
-                onClick={() => setOpenSections(prev =>
-                  prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]
-                )}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all ${selectedGroup === section ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
-              >
-                <span className={`text-sm font-extrabold tracking-wide ${selectedGroup === section ? 'text-blue-300' : 'text-slate-100'}`}>
-                  <span className="text-yellow-400 mr-2">☆</span> {section}
-                </span>
-                <ChevronDown size={12} className={`transition-transform duration-200 ${isOpen ? 'text-blue-400 rotate-180' : 'text-slate-500'}`} />
-              </button>
-              {isOpen && (
-                <div className="mb-1 space-y-0.5">
-                  {titles.map(title => (
-                    <button
-                      key={title}
-                      onClick={() => {
-                        setSelectedGroup(section);
-                        setSelectedSubTitle(title);
-                        setShowHome(false);
-                        setIsToolbox(false);
-                      }}
-                      className={`w-full text-left pl-8 pr-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        selectedSubTitle === title && selectedGroup === section
-                          ? 'bg-blue-500/20 text-blue-200 font-extrabold text-sm ring-1 ring-inset ring-blue-400/50'
-                          : 'text-slate-500 hover:bg-slate-800/40 hover:text-slate-300'
-                      }`}
-                    >
-                      {title}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {categoryStructure.map(({ section }) => (
+          <button
+            key={section}
+            onClick={() => {
+              const firstTitle = categoryStructure.find(c => c.section === section)?.titles[0] ?? '';
+              setSelectedGroup(section);
+              setSelectedSubTitle(firstTitle);
+              setShowHome(false);
+              setIsToolbox(false);
+            }}
+            className={`w-full flex items-center px-3 py-2 rounded-xl transition-all ${selectedGroup === section ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
+          >
+            <span className={`text-sm font-extrabold tracking-wide ${selectedGroup === section ? 'text-blue-300' : 'text-slate-100'}`}>
+              <span className="text-yellow-400 mr-2">☆</span> {section}
+            </span>
+          </button>
+        ))}
       </>
     );
 
@@ -324,13 +282,15 @@ const LLMWiki: React.FC = () => {
       </aside>
 
       {/* ── Col 2: 卡片副標題 (只有 project mode 且非 toolbox/home 時顯示) ── */}
-      {!isToolbox && !showHome && mode === 'project' && (
+      {!isToolbox && !showHome && (mode === 'project' || mode === 'category') && (
         <div className="w-44 border-r border-slate-800/60 flex flex-col bg-[#0b0e1a] flex-shrink-0">
-          <div className="px-3 pt-4 pb-2 border-b border-slate-800/40">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{currentStudio}</p>
+          <div className="px-3 border-b border-slate-800/40 flex items-center" style={{minHeight: '73px'}}>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+              {mode === 'project' ? currentStudio : selectedGroup}
+            </p>
           </div>
           <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
-            {currentStudioProjects.map(p => (
+            {mode === 'project' ? currentStudioProjects.map(p => (
               <button
                 key={p}
                 onClick={() => handleProjectSelect(p)}
@@ -343,6 +303,21 @@ const LLMWiki: React.FC = () => {
                 <p className={`text-sm font-extrabold ${selectedProject === p ? 'text-blue-300' : 'text-slate-200'}`}>{p}</p>
                 <p className="text-[10px] mt-0.5 text-slate-500">
                   {wikiDocs.filter(d => d.project === p || d.project.split('、').includes(p)).length} 份文件
+                </p>
+              </button>
+            )) : categoryStructure.find(c => c.section === selectedGroup)?.titles.map(title => (
+              <button
+                key={title}
+                onClick={() => { setSelectedSubTitle(title); setShowHome(false); setIsToolbox(false); }}
+                className={`w-full text-left p-3 rounded-xl border transition-all ${
+                  selectedSubTitle === title
+                    ? 'bg-blue-600/15 border-blue-500/40'
+                    : 'bg-slate-900/60 border-slate-800/50 text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 hover:border-slate-700'
+                }`}
+              >
+                <p className={`text-sm font-extrabold leading-tight ${selectedSubTitle === title ? 'text-blue-300' : 'text-slate-200'}`}>{title}</p>
+                <p className="text-[10px] mt-0.5 text-slate-500">
+                  {wikiDocs.filter(d => d.section === selectedGroup && d.title === title).length} 份文件
                 </p>
               </button>
             ))}
