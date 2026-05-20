@@ -249,20 +249,32 @@ const LLMWiki: React.FC = () => {
     );
   };
 
+  const currentStudioProjects = (() => {
+    if (isToolbox || showHome || mode !== 'project') return [];
+    const sg = studioGroups.find(s => s.projects.includes(selectedProject));
+    return sg ? sg.projects : [];
+  })();
+
+  const currentStudio = (() => {
+    const sg = studioGroups.find(s => s.projects.includes(selectedProject));
+    return sg ? sg.studio : '';
+  })();
+
   return (
     <div className="flex h-screen w-screen bg-[#0b0f1a] text-slate-200 overflow-hidden" style={FONT_STYLE}>
 
-      <aside className="w-80 border-r border-slate-800/60 flex flex-col bg-[#0d121f] flex-shrink-0">
-        <div className="p-6 border-b border-slate-800/40 flex items-center justify-center">
+      {/* ── Col 1: Studio 主標題 ── */}
+      <aside className="w-52 border-r border-slate-800/60 flex flex-col bg-[#0d121f] flex-shrink-0">
+        <div className="p-5 border-b border-slate-800/40 flex items-center justify-center">
           <style>{`@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');`}</style>
           <button onClick={goHome}>
-            <h1 style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive", fontSize: '1.3rem', fontWeight: 700, color: 'white', letterSpacing: '0.02em', lineHeight: 1.2 }}>
+            <h1 style={{ fontFamily: "'Dancing Script', 'Brush Script MT', cursive", fontSize: '1.1rem', fontWeight: 700, color: 'white', letterSpacing: '0.02em', lineHeight: 1.2, textAlign: 'center' }}>
               The Bug Hunter's Diary
             </h1>
           </button>
         </div>
 
-        <div className="px-4 pt-4 pb-3">
+        <div className="px-3 pt-3 pb-2">
           <div className="flex p-1 bg-slate-950/60 rounded-xl border border-slate-800/50 gap-0.5">
             {modeTabs.map(tab => (
               <button
@@ -279,7 +291,7 @@ const LLMWiki: React.FC = () => {
                   }
                   if (tab.key === 'project') setSelectedProject('PP01');
                 }}
-                className={`flex-1 flex items-center justify-center py-2 text-sm font-bold rounded-lg transition-all ${
+                className={`flex-1 flex items-center justify-center py-1.5 text-xs font-bold rounded-lg transition-all ${
                   !isToolbox && mode === tab.key && !showHome
                     ? 'bg-slate-700 text-white shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
@@ -291,28 +303,54 @@ const LLMWiki: React.FC = () => {
           </div>
         </div>
 
-        <div className="px-4 pb-3">
+        <div className="px-3 pb-2">
           <button
             onClick={() => { setIsToolbox(true); setShowHome(false); setSelectedGroup(''); setSelectedSubTitle(''); }}
-            className={`w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all text-sm font-bold ${
+            className={`w-full py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all text-xs font-bold ${
               isToolbox
                 ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-lg shadow-rose-900/30'
                 : 'bg-gradient-to-r from-blue-600/80 to-indigo-600/80 hover:from-blue-500 hover:to-indigo-500 text-white shadow-lg shadow-blue-900/20'
             }`}
           >
-            <Activity size={14} />
+            <Activity size={13} />
             快捷工具
           </button>
         </div>
-        <div className="mx-4 mb-3 h-px bg-slate-800/60" />
+        <div className="mx-3 mb-2 h-px bg-slate-800/60" />
 
-        <nav className="flex-1 overflow-y-auto px-3 space-y-0.5 py-1">
+        <nav className="flex-1 overflow-y-auto px-2 space-y-0.5 py-1">
           {renderNav()}
         </nav>
-
-        <div className="p-4 border-t border-slate-800/60 bg-[#0b0f1a] min-h-[56px]" />
       </aside>
 
+      {/* ── Col 2: 卡片副標題 (只有 project mode 且非 toolbox/home 時顯示) ── */}
+      {!isToolbox && !showHome && mode === 'project' && (
+        <div className="w-44 border-r border-slate-800/60 flex flex-col bg-[#0b0e1a] flex-shrink-0">
+          <div className="px-3 pt-4 pb-2 border-b border-slate-800/40">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{currentStudio}</p>
+          </div>
+          <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+            {currentStudioProjects.map(p => (
+              <button
+                key={p}
+                onClick={() => handleProjectSelect(p)}
+                className={`w-full text-left p-3 rounded-xl border transition-all ${
+                  selectedProject === p
+                    ? 'bg-blue-600/15 border-blue-500/40 text-blue-300'
+                    : 'bg-slate-900/60 border-slate-800/50 text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 hover:border-slate-700'
+                }`}
+              >
+                <p className={`text-sm font-extrabold ${selectedProject === p ? 'text-blue-300' : 'text-slate-200'}`}>{p}</p>
+                <p className="text-[10px] mt-0.5 text-slate-500">
+                  {wikiDocs.filter(d => d.project === p || d.project.split('、').includes(p)).length} 份文件
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Col 3: 內容區 ── */}
       <main className="flex-1 flex flex-col min-w-0 bg-[#0b0f1a]">
         <div className="flex-1 overflow-y-auto">
           <div className="w-full px-10 py-8">
