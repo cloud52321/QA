@@ -157,7 +157,7 @@ const TG112Calc: React.FC = () => {
   const handleDeductBet = () => {
     const bal = parseFloat(balance);
     if (isNaN(bal)) return;
-    setBalance(floor2(bal - bet).toFixed(2));
+    setBalance((Math.round((bal - bet) * 100) / 100).toFixed(2));
     setBalanceDir('down');
   };
 
@@ -215,7 +215,7 @@ const TG112Calc: React.FC = () => {
           <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4 space-y-2">
             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">Bet</label>
             <div className="flex gap-2">
-              <select value={bet} onChange={e => setBet(Number(e.target.value))}
+              <select value={bet} onChange={e => setBet(parseFloat(parseFloat(e.target.value).toFixed(2)))}
                 className="flex-1 bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:border-blue-500/50 transition-all">
                 {BET_OPTIONS.map(v => <option key={v} value={v}>{v}</option>)}
               </select>
