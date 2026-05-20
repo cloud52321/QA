@@ -50,7 +50,7 @@ const ODDS_R3_RAW: Record<number, { high: number; low: number }> = {
 };
 
 // 顯示賠率：無條件捨去至小數第二位
-const floor2 = (n: number) => Math.floor(n * 100) / 100;
+const floor2 = (n: number) => Math.floor(Math.round(n * 10000) / 100) / 100;
 const displayOdds = (raw: number) => floor2(raw);
 
 interface HistoryEntry {
@@ -76,7 +76,7 @@ const TG112Calc: React.FC = () => {
   const [balance, setBalance] = useState<string>('');
   const [balanceDir, setBalanceDir] = useState<'up' | 'down' | null>(null);
 
-  const floor2 = (n: number) => Math.floor(n * 100) / 100;
+  const floor2 = (n: number) => Math.floor(Math.round(n * 10000) / 100) / 100;
 
   const computeOdds = (
     prevCard: string, curCard: string, round: number, choice?: 'high' | 'low'
@@ -173,7 +173,7 @@ const TG112Calc: React.FC = () => {
   const reset = () => { setBet(5); setCard(''); setHistory([]); setTieChoice(null); setBalance(''); setBalanceDir(null); };
 
   const lastEntry = history[history.length - 1];
-  const totalPayout = lastEntry ? floor2(lastEntry.cumulativeDisplay * bet) : 0;
+  const totalPayout = lastEntry ? Math.round(lastEntry.cumulativeDisplay * bet * 100) / 100 : 0;
 
   return (
     <div className="space-y-6">
@@ -304,7 +304,7 @@ const TG112Calc: React.FC = () => {
                 {history.map((h, i) => {
                   const dispOdds = h.oddsDisplay;
                   const dispCumulative = h.cumulativeDisplay;
-                  const payout = floor2(dispCumulative * bet);
+                  const payout = Math.floor(Math.round(dispCumulative * bet * 10000) / 100) / 100;
                   return (
                     <tr key={h.id} className={`border-b border-slate-800/40 ${i % 2 === 0 ? '' : 'bg-slate-900/20'}`}>
                       <td className="px-3 py-2.5 text-slate-500 text-xs">{i + 1}</td>
