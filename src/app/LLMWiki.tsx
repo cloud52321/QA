@@ -114,32 +114,37 @@ const LLMWiki: React.FC = () => {
       <>
         {studioGroups.map(({ studio, projects }) => {
           const isActive = projects.includes(selectedProject);
+          const isOpen = openSections.includes(studio);
           return (
             <div key={studio}>
               <button
-                onClick={() => handleProjectSelect(projects[0])}
-                className={`w-full flex items-center px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
+                onClick={() => {
+                  setOpenSections(prev => prev.includes(studio) ? prev.filter(s => s !== studio) : [...prev, studio]);
+                  if (!isOpen) handleProjectSelect(projects[0]);
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
               >
                 <span className={`text-sm font-extrabold tracking-wide ${isActive ? 'text-blue-300' : 'text-slate-100'}`}>
                   <span className="text-yellow-400 mr-2">☆</span> {studio}
                 </span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  className={`transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180 text-blue-400' : 'text-slate-500'}`}>
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </button>
-              {isActive && (
-                <div className="mt-1 mb-1 px-1 space-y-1">
+              {isOpen && (
+                <div className="mt-1 mb-1 px-1 grid grid-cols-2 gap-1">
                   {projects.map(p => (
                     <button
                       key={p}
                       onClick={() => handleProjectSelect(p)}
-                      className={`w-full text-left px-3 py-2 rounded-xl border transition-all ${
+                      className={`w-full text-left px-2 py-2 rounded-xl border transition-all ${
                         selectedProject === p
                           ? 'bg-blue-600/15 border-blue-500/40'
                           : 'bg-[#0f1629]/60 border-slate-700/40 hover:bg-slate-800/60 hover:border-slate-600'
                       }`}
                     >
                       <p className={`text-xs font-extrabold ${selectedProject === p ? 'text-blue-300' : 'text-slate-200'}`}>{p}</p>
-                      <p className="text-[10px] mt-0.5 text-slate-500">
-                        {wikiDocs.filter(d => d.project === p || d.project.split('、').includes(p)).length} 份文件
-                      </p>
                     </button>
                   ))}
                 </div>
@@ -154,38 +159,43 @@ const LLMWiki: React.FC = () => {
       <>
         {categoryStructure.map(({ section, titles }) => {
           const isActive = selectedGroup === section;
+          const isOpen = openSections.includes(section);
           return (
             <div key={section}>
               <button
                 onClick={() => {
-                  const firstTitle = titles[0] ?? '';
-                  setSelectedGroup(section);
-                  setSelectedSubTitle(firstTitle);
-                  setShowHome(false);
-                  setIsToolbox(false);
+                  setOpenSections(prev => prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]);
+                  if (!isOpen) {
+                    const firstTitle = titles[0] ?? '';
+                    setSelectedGroup(section);
+                    setSelectedSubTitle(firstTitle);
+                    setShowHome(false);
+                    setIsToolbox(false);
+                  }
                 }}
-                className={`w-full flex items-center px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
               >
                 <span className={`text-sm font-extrabold tracking-wide ${isActive ? 'text-blue-300' : 'text-slate-100'}`}>
                   <span className="text-yellow-400 mr-2">☆</span> {section}
                 </span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                  className={`transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180 text-blue-400' : 'text-slate-500'}`}>
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </button>
-              {isActive && (
-                <div className="mt-1 mb-1 px-1 space-y-1">
+              {isOpen && (
+                <div className="mt-1 mb-1 px-1 grid grid-cols-2 gap-1">
                   {titles.map(title => (
                     <button
                       key={title}
                       onClick={() => { setSelectedSubTitle(title); setShowHome(false); setIsToolbox(false); }}
-                      className={`w-full text-left px-3 py-2 rounded-xl border transition-all ${
+                      className={`w-full text-left px-2 py-2 rounded-xl border transition-all ${
                         selectedSubTitle === title
                           ? 'bg-blue-600/15 border-blue-500/40'
                           : 'bg-[#0f1629]/60 border-slate-700/40 hover:bg-slate-800/60 hover:border-slate-600'
                       }`}
                     >
                       <p className={`text-xs font-extrabold leading-tight ${selectedSubTitle === title ? 'text-blue-300' : 'text-slate-200'}`}>{title}</p>
-                      <p className="text-[10px] mt-0.5 text-slate-500">
-                        {wikiDocs.filter(d => d.section === section && d.title === title).length} 份文件
-                      </p>
                     </button>
                   ))}
                 </div>
