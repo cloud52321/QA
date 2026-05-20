@@ -586,26 +586,26 @@ export const HomeView: React.FC = () => {
     <div className="space-y-8">
 
       {/* ── 例行公事與會議 ── */}
-      <div className="rounded-2xl border border-amber-500/20 bg-[#0d121f] overflow-hidden">
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-amber-500/15">
-          <span className="text-base leading-none">📌</span>
-          <h2 className="text-base font-extrabold text-amber-300 tracking-tight">{routineAnnouncement.title}</h2>
+      <div className="rounded-2xl border border-slate-700/50 bg-[#0d1220] overflow-hidden">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-700/40 bg-slate-800/20">
+          <span className="text-xl leading-none">📌</span>
+          <h2 className="text-base font-extrabold text-white tracking-tight">{routineAnnouncement.title}</h2>
         </div>
-        <div className="grid grid-cols-2 divide-x divide-y divide-slate-800/60">
+        <div className="grid grid-cols-2 divide-x divide-y divide-slate-800/50">
           {routineAnnouncement.groups.map(group => (
-            <div key={group.freq} className="px-5 py-4 space-y-3">
-              <div className="flex items-center gap-3">
-                <span className="text-base leading-none">{group.emoji}</span>
-                <span className="text-sm font-bold text-slate-200">{group.freq}</span>
+            <div key={group.freq} className="px-6 py-5 space-y-3 bg-[#0b0f1c]">
+              <div className="flex items-center gap-2">
+                <span className="text-lg leading-none">{group.emoji}</span>
+                <span className="text-sm font-extrabold text-slate-100">{group.freq}</span>
               </div>
               <ul className="space-y-2 pl-1">
                 {group.items.map((item, i) => (
                   <li key={i} className="flex gap-2 text-sm text-slate-400 leading-relaxed">
-                    <span className="text-amber-500 flex-shrink-0 mt-0.5">•</span>
+                    <span className="text-cyan-500 flex-shrink-0 mt-0.5">•</span>
                     <span>
                       {item.text}
                       {'link' in item && item.link && (
-                        <a href={item.link.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline underline-offset-2 ml-1 text-xs">{item.link.label}</a>
+                        <a href={item.link.url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 ml-1 text-xs">{item.link.label}</a>
                       )}
                       {'note' in item && item.note && (
                         <><br /><span className="text-slate-600 text-xs mt-0.5 block">{item.note}</span></>
@@ -626,14 +626,14 @@ export const HomeView: React.FC = () => {
         {announcements.map((ann, idx) => {
           const isOpen = openIdx === idx;
           return (
-            <div key={idx} className={`rounded-2xl border overflow-hidden transition-all ${isOpen ? 'border-slate-600' : 'border-slate-800/50'}`}>
+            <div key={idx} className={`rounded-2xl border overflow-hidden transition-all ${isOpen ? 'border-slate-600/70' : 'border-slate-700/40'} bg-[#0d1220]`}>
               <button
                 onClick={() => setOpenIdx(isOpen ? null : idx)}
-                className={`w-full flex items-center justify-between px-5 py-4 text-left transition-colors ${isOpen ? 'bg-slate-800/50' : 'bg-slate-900/20 hover:bg-slate-800/20'}`}
+                className={`w-full flex items-center justify-between px-6 py-4 text-left transition-colors ${isOpen ? 'bg-slate-800/40' : 'hover:bg-slate-800/20'}`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 flex-shrink-0" />
-                  <span className="text-base font-extrabold text-white">{ann.title}</span>
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
+                  <span className="text-sm font-extrabold text-white">{ann.title}</span>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                   className={`text-slate-500 transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
@@ -642,11 +642,11 @@ export const HomeView: React.FC = () => {
               </button>
 
               {isOpen && ann.type === 'account' && (
-                <div className="p-5 bg-slate-900/10">
+                <div className="p-5 bg-slate-900/20">
                   <div className="grid grid-cols-2 gap-4">
                     {ann.cards.map((card, ci) => (
-                      <div key={ci} className="bg-slate-900/60 border border-slate-800 rounded-xl overflow-hidden">
-                        <div className="px-4 py-3 border-b border-slate-800 bg-slate-800/30">
+                      <div key={ci} className="bg-[#0b0f1c] border border-slate-700/50 rounded-xl overflow-hidden">
+                        <div className="px-4 py-3 border-b border-slate-700/40 bg-slate-800/30">
                           <span className="text-sm font-extrabold text-slate-100 tracking-wide">{card.label}</span>
                         </div>
                         <div className="divide-y divide-slate-800/60">
@@ -664,12 +664,12 @@ export const HomeView: React.FC = () => {
               )}
 
               {isOpen && ann.type === 'table' && (
-                <div className="p-5 bg-slate-900/10 overflow-x-auto">
+                <div className="p-5 bg-slate-900/20 overflow-x-auto">
                   <table className="w-full border-collapse text-sm">
                     <thead>
                       <tr>
                         {ann.columns.map(col => (
-                          <th key={col} className="px-4 py-2.5 text-center text-xs font-extrabold text-slate-300 bg-slate-800/60 border border-slate-700 first:rounded-tl-lg last:rounded-tr-lg">
+                          <th key={col} className="px-4 py-2.5 text-center text-xs font-extrabold text-slate-300 bg-slate-800/60 border border-slate-700/50 first:rounded-tl-lg last:rounded-tr-lg">
                             {col}
                           </th>
                         ))}
@@ -679,10 +679,10 @@ export const HomeView: React.FC = () => {
                       {ann.rows.map((row, ri) => (
                         <tr key={ri}>
                           {row.map((cell, ci) => (
-                            <td key={ci} className="px-4 py-3 border border-slate-800/60 align-top text-center">
+                            <td key={ci} className="px-4 py-3 border border-slate-800/40 align-top text-center">
                               {cell ? (
                                 <a href={cell.url} target="_blank" rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 transition-colors text-xs leading-relaxed">
+                                  className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition-colors text-xs leading-relaxed">
                                   <span className="text-slate-500 flex-shrink-0">▣</span>
                                   {cell.label}
                                 </a>
@@ -697,30 +697,30 @@ export const HomeView: React.FC = () => {
               )}
 
               {isOpen && ann.type === 'list' && (
-                <div className="p-5 bg-slate-900/10 space-y-3">
+                <div className="p-5 bg-slate-900/20 space-y-3">
                   <ListItems items={ann.items} />
                 </div>
               )}
 
               {isOpen && ann.type === 'tools' && (
-                <div className="p-5 bg-slate-900/10 space-y-6">
+                <div className="p-5 bg-slate-900/20 space-y-6">
                   {ann.sections.map((sec, si) => (
                     <div key={si} className="space-y-2">
                       {sec.heading && (
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="text-xs font-extrabold text-amber-300 uppercase tracking-widest">{sec.heading}</span>
-                          <div className="flex-1 h-px bg-slate-800" />
+                          <span className="text-xs font-extrabold text-cyan-400 uppercase tracking-widest">{sec.heading}</span>
+                          <div className="flex-1 h-px bg-slate-700/50" />
                         </div>
                       )}
                       <ul className="space-y-2 pl-1">
                         {sec.items.map((item, ii) => (
                           <li key={ii} className="flex gap-2 text-sm text-slate-400 leading-relaxed">
-                            <span className="text-amber-500 flex-shrink-0 mt-0.5">•</span>
+                            <span className="text-cyan-500 flex-shrink-0 mt-0.5">•</span>
                             <span>
                               {item.text}
                               {item.links && item.links.map((lk, li) => (
                                 <a key={li} href={lk.url} target="_blank" rel="noopener noreferrer"
-                                  className="text-blue-400 hover:text-blue-300 underline underline-offset-2 ml-1 text-xs">
+                                  className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 ml-1 text-xs">
                                   {lk.label}
                                 </a>
                               ))}
