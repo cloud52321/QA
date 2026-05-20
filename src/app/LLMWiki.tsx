@@ -119,7 +119,9 @@ const LLMWiki: React.FC = () => {
             <div key={studio}>
               <button
                 onClick={() => {
-                  setOpenSections(prev => prev.includes(studio) ? prev.filter(s => s !== studio) : [...prev, studio]);
+                  setOpenSections(prev =>
+                    prev.includes(studio) ? prev.filter(s => s !== studio) : [studio]
+                  );
                   if (!isOpen) handleProjectSelect(projects[0]);
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all ${isActive ? 'bg-blue-600/10 border border-blue-300' : 'hover:bg-slate-800/40'}`}
@@ -133,18 +135,27 @@ const LLMWiki: React.FC = () => {
                 </svg>
               </button>
               {isOpen && (
-                <div className="mt-1 mb-1 px-1 grid grid-cols-2 gap-1">
+                <div className="mt-1.5 mb-2 px-1 grid grid-cols-2 gap-1.5">
                   {projects.map(p => (
                     <button
                       key={p}
                       onClick={() => handleProjectSelect(p)}
-                      className={`w-full text-left px-2 py-2 rounded-xl border transition-all ${
+                      className={`w-full text-left px-3 py-3 rounded-xl border transition-all ${
                         selectedProject === p
                           ? 'bg-blue-600/15 border-blue-500/40'
-                          : 'bg-[#0f1629]/60 border-slate-700/40 hover:bg-slate-800/60 hover:border-slate-600'
+                          : 'bg-[#0f1629]/80 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-600'
                       }`}
                     >
-                      <p className={`text-xs font-extrabold ${selectedProject === p ? 'text-blue-300' : 'text-slate-200'}`}>{p}</p>
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                          className={selectedProject === p ? 'text-blue-400' : 'text-slate-500'}>
+                          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>
+                        </svg>
+                        <p className={`text-xs font-extrabold ${selectedProject === p ? 'text-blue-300' : 'text-slate-200'}`}>{p}</p>
+                      </div>
+                      <span className={`text-[10px] ${selectedProject === p ? 'text-blue-400/70' : 'text-slate-600'}`}>
+                        {wikiDocs.filter(d => d.project === p || d.project.split('、').includes(p)).length} 個文件
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -164,7 +175,7 @@ const LLMWiki: React.FC = () => {
             <div key={section}>
               <button
                 onClick={() => {
-                  setOpenSections(prev => prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]);
+                  setOpenSections(prev => prev.includes(section) ? prev.filter(s => s !== section) : [section]);
                   if (!isOpen) {
                     const firstTitle = titles[0] ?? '';
                     setSelectedGroup(section);
@@ -184,18 +195,27 @@ const LLMWiki: React.FC = () => {
                 </svg>
               </button>
               {isOpen && (
-                <div className="mt-1 mb-1 px-1 grid grid-cols-2 gap-1">
+                <div className="mt-1.5 mb-2 px-1 grid grid-cols-2 gap-1.5">
                   {titles.map(title => (
                     <button
                       key={title}
                       onClick={() => { setSelectedSubTitle(title); setShowHome(false); setIsToolbox(false); }}
-                      className={`w-full text-left px-2 py-2 rounded-xl border transition-all ${
+                      className={`w-full text-left px-3 py-3 rounded-xl border transition-all ${
                         selectedSubTitle === title
                           ? 'bg-blue-600/15 border-blue-500/40'
-                          : 'bg-[#0f1629]/60 border-slate-700/40 hover:bg-slate-800/60 hover:border-slate-600'
+                          : 'bg-[#0f1629]/80 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-600'
                       }`}
                     >
-                      <p className={`text-xs font-extrabold leading-tight ${selectedSubTitle === title ? 'text-blue-300' : 'text-slate-200'}`}>{title}</p>
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                          className={selectedSubTitle === title ? 'text-blue-400' : 'text-slate-500'}>
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        <p className={`text-xs font-extrabold leading-tight ${selectedSubTitle === title ? 'text-blue-300' : 'text-slate-200'}`}>{title}</p>
+                      </div>
+                      <span className={`text-[10px] ${selectedSubTitle === title ? 'text-blue-400/70' : 'text-slate-600'}`}>
+                        {wikiDocs.filter(d => d.section === section && d.title === title).length} 個文件
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -267,7 +287,7 @@ const LLMWiki: React.FC = () => {
     <div className="flex h-screen w-screen bg-[#0f1629] text-slate-200 overflow-hidden" style={FONT_STYLE}>
 
       {/* ── Col 1: Studio 主標題 ── */}
-      <aside className="w-52 border-r border-slate-800/60 flex flex-col bg-[#131c30] flex-shrink-0">
+      <aside className="w-64 border-r border-slate-800/60 flex flex-col bg-[#131c30] flex-shrink-0">
         <div className="p-5 border-b border-slate-800/40 flex items-center justify-center">
           <style>{`@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');`}</style>
           <button onClick={goHome}>
