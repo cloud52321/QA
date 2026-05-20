@@ -140,22 +140,18 @@ const LLMWiki: React.FC = () => {
                     <button
                       key={p}
                       onClick={() => handleProjectSelect(p)}
-                      className={`w-full text-left px-3 py-3 rounded-xl border transition-all ${
+                      className={`w-full flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-xl border transition-all ${
                         selectedProject === p
-                          ? 'bg-blue-600/15 border-blue-500/40'
-                          : 'bg-[#0f1629]/80 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-600'
+                          ? 'bg-blue-600/10 border-blue-400/50'
+                          : 'bg-[#0f1629]/80 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-500/50'
                       }`}
                     >
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                          className={selectedProject === p ? 'text-blue-400' : 'text-slate-500'}>
-                          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>
-                        </svg>
-                        <p className={`text-xs font-extrabold ${selectedProject === p ? 'text-blue-300' : 'text-slate-200'}`}>{p}</p>
-                      </div>
-                      <span className={`text-[10px] ${selectedProject === p ? 'text-blue-400/70' : 'text-slate-600'}`}>
-                        {wikiDocs.filter(d => d.project === p || d.project.split('、').includes(p)).length} 個文件
-                      </span>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                        style={selectedProject === p ? {color:'#60a5fa', filter:'drop-shadow(0 0 6px #3b82f6)'} : {color:'#475569'}}>
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>
+                        <line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>
+                      </svg>
+                      <p className={`text-xs font-extrabold text-center ${selectedProject === p ? 'text-blue-300' : 'text-slate-300'}`}>{p}</p>
                     </button>
                   ))}
                 </div>
@@ -200,22 +196,18 @@ const LLMWiki: React.FC = () => {
                     <button
                       key={title}
                       onClick={() => { setSelectedSubTitle(title); setShowHome(false); setIsToolbox(false); }}
-                      className={`w-full text-left px-3 py-3 rounded-xl border transition-all ${
+                      className={`w-full flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-xl border transition-all ${
                         selectedSubTitle === title
-                          ? 'bg-blue-600/15 border-blue-500/40'
-                          : 'bg-[#0f1629]/80 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-600'
+                          ? 'bg-blue-600/10 border-blue-400/50'
+                          : 'bg-[#0f1629]/80 border-slate-700/50 hover:bg-slate-800/60 hover:border-slate-500/50'
                       }`}
                     >
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                          className={selectedSubTitle === title ? 'text-blue-400' : 'text-slate-500'}>
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-                        </svg>
-                        <p className={`text-xs font-extrabold leading-tight ${selectedSubTitle === title ? 'text-blue-300' : 'text-slate-200'}`}>{title}</p>
-                      </div>
-                      <span className={`text-[10px] ${selectedSubTitle === title ? 'text-blue-400/70' : 'text-slate-600'}`}>
-                        {wikiDocs.filter(d => d.section === section && d.title === title).length} 個文件
-                      </span>
+                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                        style={selectedSubTitle === title ? {color:'#60a5fa', filter:'drop-shadow(0 0 6px #3b82f6)'} : {color:'#475569'}}>
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                        <line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>
+                      </svg>
+                      <p className={`text-xs font-extrabold text-center leading-tight ${selectedSubTitle === title ? 'text-blue-300' : 'text-slate-300'}`}>{title}</p>
                     </button>
                   ))}
                 </div>
