@@ -302,7 +302,7 @@ const LLMWiki: React.FC = () => {
                   onClick={() => handleProjectSelect(p)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-bold transition-all ${
                     selectedProject === p
-                      ? 'bg-blue-600/20 border-blue-400/60 text-blue-300'
+                      ? 'bg-amber-500/20 border-amber-400/60 text-amber-300'
                       : 'bg-slate-900/60 border-slate-700/50 text-slate-300 hover:bg-slate-800/60 hover:border-slate-600'
                   }`}
                 >
@@ -312,7 +312,7 @@ const LLMWiki: React.FC = () => {
                     <span className="text-base leading-none">{PROJECT_ICON[p]}</span>
                   ) : (
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                      style={selectedProject === p ? {color:'#60a5fa'} : {color:'#64748b'}}>
+                      style={selectedProject === p ? {color:'#fbbf24'} : {color:'#64748b'}}>
                       <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>
                       <line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/>
                     </svg>
@@ -334,7 +334,7 @@ const LLMWiki: React.FC = () => {
                       onClick={() => { setSelectedGroup(section); setSelectedSubTitle(title); }}
                       className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-bold transition-all ${
                         selectedSubTitle === title && selectedGroup === section
-                          ? 'bg-blue-600/20 border-blue-400/60 text-blue-300'
+                          ? 'bg-amber-500/20 border-amber-400/60 text-amber-300'
                           : 'bg-slate-900/60 border-slate-700/50 text-slate-300 hover:bg-slate-800/60 hover:border-slate-600'
                       }`}
                     >
