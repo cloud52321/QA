@@ -217,7 +217,7 @@ export const LinkGenerator: React.FC = () => {
         <div className="inline-flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50">
           {[ALL_STUDIO, ...studioList].map(s => (
             <button key={s} onClick={() => handleStudioChange(s)}
-              className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${activeStudio === s ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-500 hover:text-slate-300'}`}>
+              className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${activeStudio === s ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-500 hover:text-slate-300'}`}>
               {s}
             </button>
           ))}
