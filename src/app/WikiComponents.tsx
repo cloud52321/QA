@@ -94,11 +94,7 @@ export const WikiCardGrid: React.FC<{ groupKey: string; docs: WikiDoc[]; mode: M
     const sectionOrder = ['產品規格', '測試規範', '測試報告'] as const;
     return (
       <div className="space-y-8">
-        <h1 className="text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
-          <span className="text-slate-400">{studioName}</span>
-          <span className="text-slate-600">—</span>
-          <span>{groupKey}</span>
-        </h1>
+
         {sectionOrder.map(sec => {
           const filtered = docs.filter(d => d.section === sec);
           if (filtered.length === 0) return null;

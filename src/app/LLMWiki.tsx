@@ -230,11 +230,10 @@ const LLMWiki: React.FC = () => {
 
     return (
       <div className="space-y-6">
-        {/* 標題 */}
+        {/* 上方標題 */}
         <div className="flex items-center gap-2">
           <span className="text-yellow-400 text-lg">★</span>
           <h2 className="text-xl font-extrabold text-white tracking-tight">{selectedStudio}</h2>
-          {mode === 'project' && <span className="text-slate-500 font-bold text-xl">— {selectedProject}</span>}
         </div>
 
         {/* 頂部 tab + 卡片列 */}
