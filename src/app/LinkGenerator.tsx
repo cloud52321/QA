@@ -120,10 +120,10 @@ export const LinkGenerator: React.FC = () => {
       {/* Form */}
       <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
 
-        {/* 對應專案 */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-xs font-bold text-slate-400 whitespace-nowrap">對應專案</span>
-          <div className="flex gap-1.5 flex-wrap items-center">
+        {/* 對應專案 + H5/PCH5 + 進階設定 同一列，專案太多會換行 */}
+        <div className="flex items-start gap-3 flex-wrap">
+          <span className="text-xs font-bold text-slate-400 whitespace-nowrap pt-1.5">對應專案</span>
+          <div className="flex gap-1.5 flex-wrap items-center flex-1">
             {projects.map(p => (
               <button
                 key={p.id}
@@ -138,30 +138,28 @@ export const LinkGenerator: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
-
-        {/* 頂部：H5/PCH5 + 進階設定勾選 */}
-        <div className="flex items-center justify-end gap-4">
-          {/* 進階設定 checkbox */}
-          <label className="flex items-center gap-2 cursor-pointer select-none">
+          <div className="flex items-center gap-3 flex-shrink-0">
+            {/* 進階設定 checkbox */}
             <div
               onClick={() => setShowAdv(v => !v)}
-              className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all cursor-pointer ${showAdv ? 'bg-amber-500 border-amber-500' : 'border-slate-600 hover:border-amber-400'}`}
+              className="flex items-center gap-1.5 cursor-pointer select-none"
             >
-              {showAdv && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+              <div className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${showAdv ? 'bg-amber-500 border-amber-500' : 'border-slate-600 hover:border-amber-400'}`}>
+                {showAdv && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+              </div>
+              <span className="text-xs font-bold text-slate-400">進階設定</span>
             </div>
-            <span className="text-xs font-bold text-slate-400">進階設定</span>
-          </label>
-          {/* H5 / PCH5 */}
-          <div className="flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50">
-            {(['h5', 'pch5'] as const).map(p => (
-              <button key={p} onClick={() => setPlatform(p)}
-                className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all uppercase ${
-                  platform === p ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-500 hover:text-slate-300'
-                }`}>
-                {p}
-              </button>
-            ))}
+            {/* H5 / PCH5 */}
+            <div className="flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50">
+              {(['h5', 'pch5'] as const).map(p => (
+                <button key={p} onClick={() => setPlatform(p)}
+                  className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all uppercase ${
+                    platform === p ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-500 hover:text-slate-300'
+                  }`}>
+                  {p}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
