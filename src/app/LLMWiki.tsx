@@ -152,16 +152,12 @@ const LLMWiki: React.FC = () => {
   const renderNav = () => {
     if (isToolbox) return (
       <div className="space-y-1">
-        <div className="px-3 pt-1 pb-1 flex items-center gap-1.5">
-          <span className="text-yellow-400 text-xs">☆</span>
-          <span className="text-xs font-extrabold text-slate-100 tracking-wide">前端 / 後台連結</span>
-        </div>
         <button
           onClick={() => { setToolPage('link'); setCalcTool(''); }}
           className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all ${toolPage === 'link' ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'}`}
         >
           <Link2 size={15} className="flex-shrink-0" />
-          <span className="text-[0.85rem] font-medium">客戶端連結</span>
+          <span className="text-[0.85rem] font-medium">直連帳號連結</span>
         </button>
         <div className="px-3 pt-3 pb-1 flex items-center gap-1.5">
           <span className="text-yellow-400 text-xs">☆</span>

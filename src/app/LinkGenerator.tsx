@@ -97,14 +97,11 @@ export const LinkGenerator: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
-            <Link2 size={15} className="text-blue-400" />
-          </div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">客戶端連結</h1>
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
+          <Link2 size={15} className="text-blue-400" />
         </div>
-        <p className="text-slate-500 text-sm ml-11">輸入測試參數，一鍵生成各環境連結</p>
+        <h1 className="text-2xl font-extrabold text-white tracking-tight">直連帳號連結</h1>
       </div>
 
       {/* Studio tabs */}
@@ -118,9 +115,14 @@ export const LinkGenerator: React.FC = () => {
           ))}
         </div>
 
-        {/* 對應專案 sub-tabs */}
-        <div className="flex items-center gap-3 flex-wrap mt-3 py-2">
-          <span className="text-sm font-bold text-slate-300 whitespace-nowrap self-center">對應專案</span>
+      </div>
+
+      {/* Form */}
+      <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
+
+        {/* 對應專案 */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-xs font-bold text-slate-400 whitespace-nowrap">對應專案</span>
           <div className="flex gap-1.5 flex-wrap items-center">
             {projects.map(p => (
               <button
@@ -137,10 +139,6 @@ export const LinkGenerator: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Form */}
-      <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
 
         {/* 頂部：H5/PCH5 + 進階設定勾選 */}
         <div className="flex items-center justify-end gap-4">
