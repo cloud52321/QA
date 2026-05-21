@@ -186,7 +186,7 @@ const LLMWiki: React.FC = () => {
       <div className="space-y-1">
         <button
           onClick={() => { setToolPage('link'); setCalcTool(''); }}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all ${toolPage === 'link' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'}`}
+          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all ${toolPage === 'link' ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'}`}
         >
           <Link2 size={15} className="flex-shrink-0" />
           <span className="text-[0.85rem] font-medium">直連帳號連結</span>
@@ -202,7 +202,7 @@ const LLMWiki: React.FC = () => {
               onClick={() => { setToolPage('calc'); setCalcTool(name); }}
               className={`w-full text-left px-3 py-2 rounded-xl text-[0.85rem] font-medium transition-all ${
                 calcTool === name
-                  ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+                  ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20'
                   : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'
               }`}
             >
