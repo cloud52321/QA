@@ -60,6 +60,7 @@ interface HistoryEntry {
   oddsRaw: number | null;   // 原始全精度賠率（用於乘積）
   oddsDisplay: number | null; // 顯示賠率（捨去後）
   extraPay: boolean;
+  skipped?: boolean;         // 是否為 Skip 替換的牌
   cumulativeRaw: number;    // 原始乘積（不含Extra，供紀錄）
   cumulativeChain: number;   // 原始連乘（含Extra，供下一行計算）
   cumulativeDisplay: number; // 顯示總賠率（捨去後）
@@ -73,6 +74,10 @@ const TG112Calc: React.FC = () => {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [nextId, setNextId] = useState(1);
   const [tieChoice, setTieChoice] = useState<null | { pendingCard: string; prevCard: string }>(null);
+  const [skipModal, setSkipModal] = useState(false);
+  const [skipCount, setSkipCount] = useState(0);
+  const SKIP_LIMIT = 30;
+  const [cashOutToast, setCashOutToast] = useState(false);
   const [balance, setBalance] = useState<string>('');
   const [balanceDir, setBalanceDir] = useState<'up' | 'down' | null>(null);
 
@@ -90,7 +95,7 @@ const TG112Calc: React.FC = () => {
   };
 
   const addEntry = (cardVal: string, choice?: 'high' | 'low') => {
-    const round = history.length + 1;
+    const round = history.filter(h => !h.skipped).length + 1;
     let entry: HistoryEntry;
 
     if (round === 1) {
@@ -128,6 +133,28 @@ const TG112Calc: React.FC = () => {
   };
 
   const handleCardSelect = (val: string) => { if (!val) return; addEntry(val); };
+
+  // Skip: 新增一行，牌面替換，賠率顯示—，總賠率繼承
+  const addSkipEntry = (newCard: string) => {
+    const lastEntry = history[history.length - 1];
+    if (!lastEntry) return;
+    const skippedEntry: HistoryEntry = {
+      id: nextId,
+      card: newCard,
+      choice: null,
+      oddsRaw: null,
+      oddsDisplay: null,
+      extraPay: false,
+      skipped: true,
+      cumulativeRaw: lastEntry.cumulativeRaw,
+      cumulativeChain: lastEntry.cumulativeChain,
+      cumulativeDisplay: lastEntry.cumulativeDisplay,
+    };
+    setHistory(prev => [...prev, skippedEntry]);
+    setNextId(n => n + 1);
+    setSkipCount(n => n + 1);
+    setSkipModal(false);
+  };
   const handleTieChoice = (choice: 'high' | 'low') => { if (!tieChoice) return; addEntry(tieChoice.pendingCard, choice); };
 
   const toggleExtraPay = (id: number) => {
@@ -135,8 +162,10 @@ const TG112Calc: React.FC = () => {
   };
 
   const deleteEntry = (id: number) => {
-    setHistory(prev => recalcCumulative(prev.filter(h => h.id !== id)));
+    const newHistory = recalcCumulative(history.filter(h => h.id !== id));
+    setHistory(newHistory);
     setTieChoice(null);
+    if (newHistory.length === 0) setSkipCount(0);
   };
 
   const recalcCumulative = (entries: HistoryEntry[]): HistoryEntry[] => {
@@ -144,6 +173,8 @@ const TG112Calc: React.FC = () => {
     let chain = 1; // 含Extra的原始連乘
     return entries.map((h, i) => {
       if (i === 0) return { ...h, oddsRaw: null, oddsDisplay: null, choice: 'base' as const, cumulativeRaw: 1, cumulativeChain: 1, cumulativeDisplay: 1 };
+      // Skip 行：維持原本的 null 賠率，只繼承累積值
+      if (h.skipped) return { ...h, oddsRaw: null, oddsDisplay: null, cumulativeRaw: cumRaw, cumulativeChain: chain, cumulativeDisplay: floor2(chain) };
       const base = h.oddsRaw ?? 1;
       cumRaw = cumRaw * base;
       const oddsDisp = floor2(base);
@@ -163,14 +194,15 @@ const TG112Calc: React.FC = () => {
 
   const handleCashOut = () => {
     const bal = parseFloat(balance) || 0;
-    // cash out = 總賠率顯示 * Bet
     const lastDisp = history.length > 0 ? history[history.length - 1].cumulativeDisplay : 1;
     const cashout = floor2(lastDisp * bet);
     setBalance(floor2(bal + cashout).toFixed(2));
     setBalanceDir('up');
+    setCashOutToast(true);
+    setTimeout(() => setCashOutToast(false), 2000);
   };
 
-  const reset = () => { setBet(5); setCard(''); setHistory([]); setTieChoice(null); setBalance(''); setBalanceDir(null); };
+  const reset = () => { setBet(5); setCard(''); setHistory([]); setTieChoice(null); setBalance(''); setBalanceDir(null); setSkipCount(0); };
 
   const lastEntry = history[history.length - 1];
   const totalPayout = lastEntry ? Math.round(lastEntry.cumulativeDisplay * bet * 100) / 100 : 0;
@@ -221,7 +253,8 @@ const TG112Calc: React.FC = () => {
               </select>
               <button
                 onClick={handleDeductBet}
-                className="px-3 py-2 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-bold transition-all whitespace-nowrap"
+                disabled={history.length > 0}
+                className="px-3 py-2 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-bold transition-all whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 扣除
               </button>
@@ -246,6 +279,15 @@ const TG112Calc: React.FC = () => {
               </button>
             ))}
           </div>
+          {history.length >= 1 && (
+            <button
+              onClick={() => setSkipModal(true)}
+              disabled={!!tieChoice || skipCount >= SKIP_LIMIT}
+              className="mt-1 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all disabled:opacity-40 bg-violet-500/10 border-violet-500/30 text-violet-300 hover:bg-violet-500/20"
+            >
+              ↺ Skip（替換牌面）{skipCount > 0 && <span className="ml-1 text-violet-500">{skipCount}/{SKIP_LIMIT}</span>}
+            </button>
+          )}
         </div>
       </div>
 
@@ -308,7 +350,10 @@ const TG112Calc: React.FC = () => {
                   return (
                     <tr key={h.id} className={`border-b border-slate-800/40 ${i % 2 === 0 ? '' : 'bg-slate-900/20'}`}>
                       <td className="px-3 py-2.5 text-slate-500 text-xs">{i + 1}</td>
-                      <td className="px-3 py-2.5 text-cyan-300 font-mono font-bold">{h.card}</td>
+                      <td className="px-3 py-2.5 text-cyan-300 font-mono font-bold">
+                        {h.card}
+                        {h.skipped && <span className="ml-1 text-[9px] font-bold text-violet-400 border border-violet-500/30 rounded px-1">SKIP</span>}
+                      </td>
                       <td className="px-3 py-2.5 text-slate-300 font-mono text-xs">
                         {dispOdds == null
                           ? <span className="text-slate-600">—</span>
@@ -346,14 +391,46 @@ const TG112Calc: React.FC = () => {
                   <td className="px-3 py-2.5 text-emerald-300 font-mono font-extrabold">{totalPayout.toFixed(2)}</td>
                   <td></td>
                   <td className="px-3 py-2.5 text-center">
-                    <button onClick={handleCashOut}
-                      className="text-[10px] font-bold px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all whitespace-nowrap">
-                      Cash Out
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button onClick={handleCashOut}
+                        className="text-[10px] font-bold px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all whitespace-nowrap">
+                        Cash Out
+                      </button>
+                      {cashOutToast && (
+                        <span className="text-[10px] font-bold text-emerald-400 animate-pulse whitespace-nowrap">✓ 已 Cash Out</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               </tfoot>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* Skip 彈窗 */}
+      {skipModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSkipModal(false)}>
+          <div className="bg-[#0d121f] border border-slate-700 rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-violet-400 text-base">↺</span>
+              <h3 className="text-base font-extrabold text-white">Skip — 替換牌面</h3>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">選擇新牌面，總賠率維持不變（剩餘 {SKIP_LIMIT - skipCount} 次）</p>
+            <div className="flex flex-wrap gap-2">
+              {["A","2","3","4","5","6","7","8","9","10","J","Q","K"].map(v => (
+                <button
+                  key={v}
+                  onClick={() => addSkipEntry(v)}
+                  className="px-3 py-2 rounded-xl text-sm font-bold border transition-all bg-slate-800/60 border-slate-700 text-slate-300 hover:bg-violet-600/20 hover:border-violet-500/40 hover:text-violet-300"
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setSkipModal(false)} className="mt-4 w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs font-bold rounded-xl transition-all">
+              取消
+            </button>
           </div>
         </div>
       )}
