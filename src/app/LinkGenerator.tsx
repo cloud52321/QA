@@ -142,9 +142,19 @@ export const LinkGenerator: React.FC = () => {
       {/* Form */}
       <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
 
-        {/* 平台切換 + 基礎設定橫向 */}
-        <div className="flex items-end justify-between gap-4 flex-wrap">
-          <p className="text-sm font-bold text-slate-300">基礎設定</p>
+        {/* 頂部：H5/PCH5 + 進階設定勾選 */}
+        <div className="flex items-center justify-end gap-4">
+          {/* 進階設定 checkbox */}
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <div
+              onClick={() => setShowAdv(v => !v)}
+              className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all cursor-pointer ${showAdv ? 'bg-amber-500 border-amber-500' : 'border-slate-600 hover:border-amber-400'}`}
+            >
+              {showAdv && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+            </div>
+            <span className="text-xs font-bold text-slate-400">進階設定</span>
+          </label>
+          {/* H5 / PCH5 */}
           <div className="flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50">
             {(['h5', 'pch5'] as const).map(p => (
               <button key={p} onClick={() => setPlatform(p)}
@@ -174,19 +184,10 @@ export const LinkGenerator: React.FC = () => {
             <input type="text" value={serial} onChange={e => setSerial(e.target.value)} placeholder="例如：01"
               className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
           </div>
-        </div>
 
-        {/* 進階設定 */}
-        <div>
-          <button
-            onClick={() => setShowAdv(v => !v)}
-            className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${showAdv ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' : 'bg-slate-800/60 border-slate-600 text-slate-300 hover:border-amber-500/40 hover:text-amber-400'}`}
-          >
-            <span className={`transition-transform duration-200 inline-block ${showAdv ? 'rotate-90' : ''}`}>⚙</span>
-            進階設定
-          </button>
+          {/* 進階設定欄位（Account 底下，勾選後出現） */}
           {showAdv && (
-            <div className="mt-3 grid grid-cols-2 gap-4 pt-3 border-t border-slate-800">
+            <>
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">STG Port</label>
                 <input type="text" value={stgPort} onChange={e => setStgPort(e.target.value)} placeholder="30907"
@@ -197,7 +198,7 @@ export const LinkGenerator: React.FC = () => {
                 <input type="text" value={room} onChange={e => setRoom(e.target.value)} placeholder="例如：PP"
                   className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
               </div>
-            </div>
+            </>
           )}
         </div>
 
