@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import { Link2, Zap, ExternalLink, ChevronDown } from 'lucide-react';
 import { studioData, studioList, ProjectInfo } from './wikiData';
 
+const ALL_STUDIO = '全部';
+const allProjects: ProjectInfo[] = studioList.flatMap(s => studioData[s]);
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface GeneratedLink { title: string; icon: React.ReactNode; url: string; desc: string; }
@@ -37,8 +40,8 @@ const CopyGoButtons: React.FC<{ url: string }> = ({ url }) => {
 // ─── LinkGenerator ────────────────────────────────────────────────────────────
 
 export const LinkGenerator: React.FC = () => {
-  const [activeStudio, setActiveStudio] = useState(studioList[0]);
-  const projects = studioData[activeStudio];
+  const [activeStudio, setActiveStudio] = useState(ALL_STUDIO);
+  const projects = activeStudio === ALL_STUDIO ? allProjects : studioData[activeStudio];
   const firstProject = projects[0];
 
   const [project,  setProject]   = useState<ProjectInfo>(firstProject);
@@ -60,12 +63,13 @@ export const LinkGenerator: React.FC = () => {
 
   const handleStudioChange = (s: string) => {
     setActiveStudio(s);
-    const first = studioData[s][0];
+    const first = s === ALL_STUDIO ? allProjects[0] : studioData[s][0];
     setProject(first); setAccount(first.account); setToken(first.token); setRoom(first.roomPrefix); setSerial('01'); setGenerated(false);
   };
 
   const handleProjectChange = (id: string) => {
-    const p = studioData[activeStudio].find(x => x.id === id)!;
+    const pool = activeStudio === ALL_STUDIO ? allProjects : studioData[activeStudio];
+    const p = pool.find(x => x.id === id)!;
     setProject(p); setAccount(p.account); setToken(p.token); setRoom(p.roomPrefix); setSerial('01'); setGenerated(false);
   };
 
@@ -106,7 +110,7 @@ export const LinkGenerator: React.FC = () => {
       {/* Studio tabs */}
       <div className="space-y-2">
         <div className="inline-flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50">
-          {studioList.map(s => (
+          {[ALL_STUDIO, ...studioList].map(s => (
             <button key={s} onClick={() => handleStudioChange(s)}
               className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${activeStudio === s ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-500 hover:text-slate-300'}`}>
               {s}
@@ -115,9 +119,9 @@ export const LinkGenerator: React.FC = () => {
         </div>
 
         {/* 對應專案 sub-tabs */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-sm font-bold text-slate-300 whitespace-nowrap">對應專案</span>
-          <div className="flex gap-1.5 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap mt-3 py-2">
+          <span className="text-sm font-bold text-slate-300 whitespace-nowrap self-center">對應專案</span>
+          <div className="flex gap-1.5 flex-wrap items-center">
             {projects.map(p => (
               <button
                 key={p.id}
@@ -136,9 +140,11 @@ export const LinkGenerator: React.FC = () => {
       </div>
 
       {/* Form */}
-      <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-        {/* 平台切換（右上角） */}
-        <div className="flex justify-end mb-4">
+      <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 space-y-5">
+
+        {/* 平台切換 + 基礎設定橫向 */}
+        <div className="flex items-end justify-between gap-4 flex-wrap">
+          <p className="text-sm font-bold text-slate-300">基礎設定</p>
           <div className="flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50">
             {(['h5', 'pch5'] as const).map(p => (
               <button key={p} onClick={() => setPlatform(p)}
@@ -151,58 +157,50 @@ export const LinkGenerator: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
-
-          <div className="space-y-3">
-            <p className="text-sm font-bold text-slate-300 border-b border-slate-800 pb-2">帳戶資訊</p>
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Account</label>
-              <input type="text" value={account} onChange={e => handleAccountChange(e.target.value)} placeholder="帳號"
-                className="w-full bg-slate-950/60 border border-amber-500/50 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all" />
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Token</label>
-              <input type="text" value={token} onChange={e => setToken(e.target.value)} placeholder="Token"
-                className="w-full bg-slate-950/60 border border-amber-500/50 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all" />
-            </div>
+        {/* 基礎設定：Account、Token、房間流水號 橫向 */}
+        <div className="grid grid-cols-3 gap-4">
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Account</label>
+            <input type="text" value={account} onChange={e => handleAccountChange(e.target.value)} placeholder="帳號"
+              className="w-full bg-slate-950/60 border border-amber-500/50 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all" />
           </div>
-
-          <div className="space-y-3 flex flex-col">
-            <p className="text-sm font-bold text-slate-300 border-b border-slate-800 pb-2">房間設定</p>
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間流水號</label>
-              <input type="text" value={serial} onChange={e => setSerial(e.target.value)} placeholder="例如：01"
-                className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
-            </div>
-
-            {/* 進階設定 toggle */}
-            <div>
-              <button
-                onClick={() => setShowAdv(v => !v)}
-                className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${showAdv ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' : 'bg-slate-800/60 border-slate-600 text-slate-300 hover:border-amber-500/40 hover:text-amber-400'}`}
-              >
-                <span className={`transition-transform duration-200 inline-block ${showAdv ? 'rotate-90' : ''}`}>⚙</span>
-                進階設定
-              </button>
-              {showAdv && (
-                <div className="mt-3 space-y-3 pl-3 border-l border-slate-700">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">STG Port</label>
-                    <input type="text" value={stgPort} onChange={e => setStgPort(e.target.value)} placeholder="30907"
-                      className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all font-mono" />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間前綴</label>
-                    <input type="text" value={room} onChange={e => setRoom(e.target.value)} placeholder="例如：PP"
-                      className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
-                  </div>
-                </div>
-              )}
-            </div>
-
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Token</label>
+            <input type="text" value={token} onChange={e => setToken(e.target.value)} placeholder="Token"
+              className="w-full bg-slate-950/60 border border-amber-500/50 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/20 transition-all" />
           </div>
-
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間流水號</label>
+            <input type="text" value={serial} onChange={e => setSerial(e.target.value)} placeholder="例如：01"
+              className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
+          </div>
         </div>
+
+        {/* 進階設定 */}
+        <div>
+          <button
+            onClick={() => setShowAdv(v => !v)}
+            className={`flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${showAdv ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' : 'bg-slate-800/60 border-slate-600 text-slate-300 hover:border-amber-500/40 hover:text-amber-400'}`}
+          >
+            <span className={`transition-transform duration-200 inline-block ${showAdv ? 'rotate-90' : ''}`}>⚙</span>
+            進階設定
+          </button>
+          {showAdv && (
+            <div className="mt-3 grid grid-cols-2 gap-4 pt-3 border-t border-slate-800">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">STG Port</label>
+                <input type="text" value={stgPort} onChange={e => setStgPort(e.target.value)} placeholder="30907"
+                  className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all font-mono" />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500">房間前綴</label>
+                <input type="text" value={room} onChange={e => setRoom(e.target.value)} placeholder="例如：PP"
+                  className="w-full bg-slate-950/60 border border-slate-700 text-slate-200 text-sm rounded-xl px-4 py-2.5 placeholder:text-slate-600 focus:outline-none focus:border-blue-500/50 transition-all" />
+              </div>
+            </div>
+          )}
+        </div>
+
       </div>
       <button onClick={generate}
         className="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all text-sm shadow-lg shadow-blue-900/30 flex items-center justify-center gap-2">
