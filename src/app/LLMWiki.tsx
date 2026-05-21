@@ -222,7 +222,7 @@ const LLMWiki: React.FC = () => {
             onClick={() => handleStudioSelect(studio)}
             className={`w-full flex items-center px-3 py-2 rounded-xl transition-all ${
               selectedStudio === studio && !showHome && !isToolbox
-                ? 'bg-blue-600/10 border border-blue-300 text-blue-300'
+                ? 'bg-amber-500/15 border border-amber-400/60 text-amber-300'
                 : 'text-slate-100 hover:bg-slate-800/40'
             }`}
           >
