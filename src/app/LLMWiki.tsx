@@ -56,7 +56,7 @@ const LLMWiki: React.FC = () => {
   const currentStudioProjects = studioGroups.find(s => s.studio === selectedStudio)?.projects ?? [];
 
   const PROJECT_ICON: Record<string, string> = {
-    TG102: '🔴', TG104: '⚡', TG110: '🪙', TG112: '🃏', TG114: '🛺',
+    TG102: '🔴', TG104: '⚡', TG112: '🃏', TG114: '🛺',
     TG116: '🧙', TG118: '🪙', TG120: '🧙', TG122: '🪙', TG124: '🪙',
     TG126: '♠️', TG128: '🧙', TG130: '🪙',
     TG103: '🍒', TG105: '🍿', TG107: '🧙', TG109: '🎯',
@@ -65,6 +65,38 @@ const LLMWiki: React.FC = () => {
   };
 
   const PROJECT_SVG_ICON: Record<string, React.ReactNode> = {
+    TG001: (
+      <svg width="22" height="22" viewBox="0 0 88 100">
+        <path d="M8,20 C14,4 22,12 18,26" fill="none" stroke="#92400e" strokeWidth="4" strokeLinecap="round"/>
+        <circle cx="18" cy="26" r="5" fill="#fde047"/>
+        <line x1="18" y1="26" x2="26" y2="18" stroke="#fde047" strokeWidth="2" strokeLinecap="round"/>
+        <line x1="18" y1="26" x2="28" y2="28" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round"/>
+        <circle cx="44" cy="58" r="36" fill="#111827" stroke="#374151" strokeWidth="2"/>
+        <circle cx="34" cy="46" r="8" fill="white" opacity="0.1"/>
+        <rect x="38" y="20" width="12" height="8" rx="3" fill="#374151"/>
+      </svg>
+    ),
+    TG002: (
+      <svg width="22" height="22" viewBox="0 0 88 88">
+        <circle cx="44" cy="44" r="42" fill="#ea580c"/>
+        <line x1="44" y1="2" x2="44" y2="86" stroke="#1c1917" strokeWidth="3"/>
+        <line x1="2" y1="44" x2="86" y2="44" stroke="#1c1917" strokeWidth="3"/>
+        <path d="M44,2 C20,16 20,72 44,86" fill="none" stroke="#1c1917" strokeWidth="3"/>
+        <path d="M44,2 C68,16 68,72 44,86" fill="none" stroke="#1c1917" strokeWidth="3"/>
+        <circle cx="44" cy="44" r="42" fill="none" stroke="#c2410c" strokeWidth="2"/>
+        <ellipse cx="32" cy="28" rx="10" ry="6" fill="white" opacity="0.18" transform="rotate(-25,32,28)"/>
+      </svg>
+    ),
+    TG110: (
+      <svg width="22" height="22" viewBox="0 0 88 88">
+        <ellipse cx="48" cy="48" rx="38" ry="38" fill="#92400e" opacity="0.4"/>
+        <circle cx="44" cy="44" r="38" fill="#f59e0b"/>
+        <circle cx="44" cy="44" r="38" fill="none" stroke="#d97706" strokeWidth="4"/>
+        <circle cx="44" cy="44" r="28" fill="#fbbf24" stroke="#f59e0b" strokeWidth="2"/>
+        <text x="45" y="56" textAnchor="middle" fontFamily="Arial Black, sans-serif" fontSize="140" fontWeight="900" fill="#78350f">₱</text>
+        <ellipse cx="30" cy="28" rx="10" ry="6" fill="white" opacity="0.25" transform="rotate(-35,30,28)"/>
+      </svg>
+    ),
     TG106: (
       <svg width="22" height="22" viewBox="0 0 88 88">
         <defs>
