@@ -558,8 +558,6 @@ const ProjectIcon: React.FC<{ id: string }> = ({ id }) => {
   return null;
 };
 
-export
-
 export const PayoutCalc: React.FC = () => {
   const studios = Object.keys(studioProjects);
   const [activeStudio, setActiveStudio] = useState(studios[0]);
