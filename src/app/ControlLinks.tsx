@@ -1,119 +1,85 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import { ExternalLink, Layout } from 'lucide-react';
 
-// ─── 資料 ─────────────────────────────────────────────────────────────────────
-
-const STUDIOS: { name: string; projects: { id: string; rn: string; module: string }[] }[] = [
+const STUDIOS = [
   {
     name: '穩贏 WinWin',
-    projects: [
-      { id: 'TG001', rn: '', module: '' },
-      { id: 'TG002', rn: '', module: '' },
-    ],
+    bg: 'bg-sky-950/40',
+    border: 'border-sky-500/20',
+    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/30',
+    cardBg: 'bg-sky-900/20 border-sky-500/15 hover:border-sky-400/30',
+    projects: ['TG001','TG002'],
   },
   {
     name: '王牌 Ace',
-    projects: [
-      { id: 'TG102', rn: '', module: '' },
-      { id: 'TG104', rn: '', module: '' },
-      { id: 'TG106', rn: '', module: '' },
-      { id: 'TG108', rn: '', module: '' },
-      { id: 'TG110', rn: '', module: '' },
-      { id: 'TG112', rn: '', module: '' },
-      { id: 'TG126', rn: '', module: '' },
-    ],
+    bg: 'bg-violet-950/40',
+    border: 'border-violet-500/20',
+    badge: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
+    cardBg: 'bg-violet-900/20 border-violet-500/15 hover:border-violet-400/30',
+    projects: ['TG102','TG104','TG106','TG108','TG110','TG112','TG126'],
   },
   {
     name: '八方來財',
-    projects: [
-      { id: 'TG103', rn: '', module: '' },
-      { id: 'TG105', rn: '', module: '' },
-      { id: 'TG107', rn: '', module: '' },
-      { id: 'TG109', rn: '', module: '' },
-      { id: 'TG111', rn: '', module: '' },
-      { id: 'TG113', rn: '', module: '' },
-      { id: 'TG115', rn: '', module: '' },
-      { id: 'TG117', rn: '', module: '' },
-      { id: 'TG119', rn: '', module: '' },
-      { id: 'TG121', rn: '', module: '' },
-      { id: 'TG123', rn: '', module: '' },
-      { id: 'TG125', rn: '', module: '' },
-      { id: 'TG139', rn: '', module: '' },
-    ],
+    bg: 'bg-amber-950/30',
+    border: 'border-amber-500/20',
+    badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+    cardBg: 'bg-amber-900/20 border-amber-500/15 hover:border-amber-400/30',
+    projects: ['TG103','TG105','TG107','TG109','TG111','TG113','TG115','TG117','TG119','TG121','TG123','TG125','TG139'],
   },
 ];
 
-// ─── LinkButton ───────────────────────────────────────────────────────────────
+// URL 對照表，之後填入
+const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {};
 
-const LinkButton: React.FC<{ label: string; url: string }> = ({ label, url }) => {
+const LinkBtn: React.FC<{ label: string; url: string; accent: string }> = ({ label, url, accent }) => {
   if (!url) return (
-    <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border border-slate-700/40 bg-slate-800/20 text-slate-600 text-xs font-bold cursor-not-allowed">
-      <ExternalLink size={10} />
-      {label}
+    <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border border-slate-700/30 text-slate-600 text-[10px] font-bold cursor-not-allowed select-none">
+      <ExternalLink size={9} /> {label}
     </div>
   );
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border border-blue-500/30 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 text-xs font-bold transition-all"
-    >
-      <ExternalLink size={10} />
-      {label}
+    <a href={url} target="_blank" rel="noopener noreferrer"
+      className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border text-[10px] font-bold transition-all ${accent}`}>
+      <ExternalLink size={9} /> {label}
     </a>
   );
 };
 
-// ─── ControlLinks ─────────────────────────────────────────────────────────────
-
-export const ControlLinks: React.FC = () => {
-  const [activeStudio, setActiveStudio] = useState(STUDIOS[0].name);
-  const studio = STUDIOS.find(s => s.name === activeStudio)!;
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
-          <Layout size={15} className="text-blue-400" />
-        </div>
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">控版連結</h1>
+export const ControlLinks: React.FC = () => (
+  <div className="space-y-6">
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
+        <Layout size={15} className="text-blue-400" />
       </div>
-
-      {/* Studio tabs */}
-      <div className="flex gap-1 p-1 bg-slate-950/60 rounded-xl border border-slate-800/50 w-fit">
-        {STUDIOS.map(s => (
-          <button
-            key={s.name}
-            onClick={() => setActiveStudio(s.name)}
-            className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
-              activeStudio === s.name
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40'
-                : 'text-slate-500 hover:text-slate-300'
-            }`}
-          >
-            {s.name}
-          </button>
-        ))}
-      </div>
-
-      {/* Project cards */}
-      <div className="grid grid-cols-3 gap-4">
-        {studio.projects.map(p => (
-          <div
-            key={p.id}
-            className="bg-slate-900/40 border border-slate-800 rounded-2xl p-4 space-y-3 hover:border-slate-700 transition-all"
-          >
-            <p className="text-sm font-extrabold text-slate-200">{p.id}</p>
-            <div className="flex gap-2">
-              <LinkButton label="RN" url={p.rn} />
-              <LinkButton label="模塊" url={p.module} />
-            </div>
-          </div>
-        ))}
-      </div>
+      <h1 className="text-2xl font-extrabold text-white tracking-tight">控版連結</h1>
     </div>
-  );
-};
+
+    {STUDIOS.map(studio => (
+      <div key={studio.name} className={`${studio.bg} border ${studio.border} rounded-2xl p-5 space-y-4`}>
+        <div className="flex items-center gap-2">
+          <span className={`text-xs font-extrabold px-3 py-1 rounded-lg border ${studio.badge}`}>
+            {studio.name}
+          </span>
+        </div>
+        <div className="grid grid-cols-4 gap-3">
+          {studio.projects.map(id => {
+            const links = PROJECT_LINKS[id] ?? { rn: '', module: '' };
+            return (
+              <div key={id} className={`border rounded-xl p-3 space-y-2.5 transition-all ${studio.cardBg}`}>
+                <p className="text-xs font-extrabold text-slate-200">{id}</p>
+                <div className="flex gap-1.5">
+                  <LinkBtn label="RN" url={links.rn}
+                    accent="border-blue-500/30 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20" />
+                  <LinkBtn label="模塊" url={links.module}
+                    accent="border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20" />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+);
