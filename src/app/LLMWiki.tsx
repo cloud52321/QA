@@ -189,7 +189,7 @@ const LLMWiki: React.FC = () => {
         {/* 常用連結 */}
         <div className="px-3 pt-1 pb-1 flex items-center gap-1.5">
           <span className="text-yellow-400 text-xs">☆</span>
-          <span className="text-xs font-extrabold text-slate-100 tracking-wide">常用連結</span>
+          <span className="text-sm font-extrabold text-slate-100 tracking-wide">常用連結</span>
         </div>
         <div className="space-y-0.5">
           {[
@@ -207,7 +207,7 @@ const LLMWiki: React.FC = () => {
               }`}
             >
               {item.icon}
-              <span className="text-[0.85rem] font-medium">{item.label}</span>
+              <span className="text-sm font-medium">{item.label}</span>
             </button>
           ))}
         </div>
@@ -215,7 +215,7 @@ const LLMWiki: React.FC = () => {
         {/* 計算工具 */}
         <div className="px-3 pt-3 pb-1 flex items-center gap-1.5">
           <span className="text-yellow-400 text-xs">☆</span>
-          <span className="text-xs font-extrabold text-slate-100 tracking-wide">計算工具</span>
+          <span className="text-sm font-extrabold text-slate-100 tracking-wide">計算工具</span>
         </div>
         <div className="space-y-0.5">
           {['賠付計算', 'RTP 轉換'].map(name => (
