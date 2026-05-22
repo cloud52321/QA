@@ -10,6 +10,7 @@ import { WikiCardGrid, CategoryCardGrid } from './WikiComponents';
 import { HomeView } from './HomeView';
 import { LinkGenerator } from './LinkGenerator';
 import { BackendLinks } from './BackendLinks';
+import { ControlLinks } from './ControlLinks';
 import { PayoutCalc } from './PayoutCalc';
 import { RTPConverter } from './RTPConverter';
 
@@ -276,11 +277,10 @@ const LLMWiki: React.FC = () => {
       </div>
     );
     if (isToolbox && toolPage === 'backend') return <BackendLinks />;
-    if (isToolbox && (toolPage === 'control' || toolPage === 'log')) return (
+    if (isToolbox && toolPage === 'control') return <ControlLinks />;
+    if (isToolbox && toolPage === 'log') return (
       <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center gap-3 min-h-[200px]">
-        <h1 className="text-xl font-extrabold text-white tracking-tight">
-          {toolPage === 'control' ? '控版連結' : 'Log 查詢連結'}
-        </h1>
+        <h1 className="text-xl font-extrabold text-white tracking-tight">Log 查詢連結</h1>
         <p className="text-slate-600 text-xs">功能開發中，敬請期待</p>
       </div>
     );
