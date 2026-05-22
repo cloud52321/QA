@@ -6,26 +6,26 @@ import { ExternalLink, Layout } from 'lucide-react';
 const STUDIOS = [
   {
     name: '穩贏 WinWin',
-    bg: 'bg-sky-950/40',
+    bg: 'bg-sky-500/5',
     border: 'border-sky-500/20',
     badge: 'bg-sky-500/10 text-sky-400 border-sky-500/30',
-    cardBg: 'bg-sky-900/20 border-sky-500/15 hover:border-sky-400/30',
+    cardBg: 'bg-sky-500/5 border-sky-500/15 hover:border-sky-400/30',
     projects: ['TG001','TG002'],
   },
   {
     name: '王牌 Ace',
-    bg: 'bg-violet-950/40',
+    bg: 'bg-violet-500/5',
     border: 'border-violet-500/20',
     badge: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
-    cardBg: 'bg-violet-900/20 border-violet-500/15 hover:border-violet-400/30',
+    cardBg: 'bg-violet-500/5 border-violet-500/15 hover:border-violet-400/30',
     projects: ['TG102','TG104','TG106','TG108','TG110','TG112','TG126'],
   },
   {
     name: '八方來財',
-    bg: 'bg-amber-950/30',
+    bg: 'bg-amber-500/5',
     border: 'border-amber-500/20',
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-    cardBg: 'bg-amber-900/20 border-amber-500/15 hover:border-amber-400/30',
+    cardBg: 'bg-amber-500/5 border-amber-500/15 hover:border-amber-400/30',
     projects: ['TG103','TG105','TG107','TG109','TG111','TG113','TG115','TG117','TG119','TG121','TG123','TG125','TG139'],
   },
 ];
@@ -67,17 +67,21 @@ export const ControlLinks: React.FC = () => (
           {studio.projects.map(id => {
             const links = PROJECT_LINKS[id] ?? { rn: '', module: '' };
             return (
-              <div key={id} className={`border rounded-xl p-3 space-y-2.5 transition-all ${studio.cardBg}`}>
-                <p className="text-xs font-extrabold text-slate-200">{id}</p>
-                <div className="flex gap-1.5">
+              <div key={id} className={`border rounded-xl p-2 space-y-1.5 transition-all aspect-square flex flex-col justify-between ${studio.cardBg}`}>
+                <p className="text-[11px] font-extrabold text-slate-200">{id}</p>
+                <div className="flex gap-1">
                   <LinkBtn label="RN" url={links.rn}
-                    accent="border-blue-500/30 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20" />
+                    accent="border-blue-500/40 bg-blue-500/20 text-white hover:bg-blue-500/30" />
                   <LinkBtn label="模塊" url={links.module}
-                    accent="border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20" />
+                    accent="border-emerald-500/40 bg-emerald-500/20 text-white hover:bg-emerald-500/30" />
                 </div>
               </div>
             );
           })}
+        </div>
+        {/* 其他相關連結 */}
+        <div className="border border-dashed border-slate-700/40 rounded-xl px-4 py-2.5 text-xs text-slate-600 italic">
+          其他相關連結（待補充）
         </div>
       </div>
     ))}
