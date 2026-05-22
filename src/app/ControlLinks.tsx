@@ -35,14 +35,14 @@ const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {};
 
 const LinkBtn: React.FC<{ label: string; url: string; isBusy?: boolean; accent: string }> = ({ label, url, accent }) => {
   if (!url) return (
-    <div className="flex-1 flex items-center justify-center py-1 rounded-lg border border-slate-700/30 text-slate-600 text-[10px] font-bold cursor-not-allowed select-none">
+    <div className="flex-1 flex items-center justify-center py-1.5 rounded-lg border border-slate-700/30 text-[11px] font-bold cursor-not-allowed select-none" style={{color:'#475569'}}>
       {label}
     </div>
   );
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className={`flex-1 flex items-center justify-center py-1 rounded-lg border text-[10px] font-bold transition-all ${accent}`}
-      style={{ color: 'white' }}>
+      className={`flex-1 flex items-center justify-center py-1.5 rounded-lg border text-[11px] font-bold transition-all ${accent}`}
+      style={{color:'#ffffff'}}>
       {label}
     </a>
   );
@@ -68,9 +68,9 @@ export const ControlLinks: React.FC = () => (
           {studio.projects.map(id => {
             const links = PROJECT_LINKS[id] ?? { rn: '', module: '' };
             return (
-              <div key={id} className={`border rounded-xl p-2.5 transition-all w-24 flex flex-col gap-2 ${studio.cardBg}`}>
-                <p className="text-xs font-extrabold text-slate-200">{id}</p>
-                <div className="flex gap-1.5">
+              <div key={id} className={`border rounded-xl p-3 transition-all w-32 flex flex-col gap-2.5 ${studio.cardBg}`}>
+                <p className="text-sm font-extrabold text-slate-200 text-center">{id}</p>
+                <div className="flex gap-2">
                   <LinkBtn label="RN" url={links.rn}
                     accent="border-slate-600 bg-slate-700 hover:bg-slate-600" />
                   <LinkBtn label="模塊" url={links.module}
