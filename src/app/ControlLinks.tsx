@@ -33,15 +33,16 @@ const STUDIOS = [
 // URL 對照表，之後填入
 const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {};
 
-const LinkBtn: React.FC<{ label: string; url: string; accent: string }> = ({ label, url, accent }) => {
+const LinkBtn: React.FC<{ label: string; url: string; isBusy?: boolean; accent: string }> = ({ label, url, accent }) => {
   if (!url) return (
-    <div className="flex-1 flex items-center justify-center py-1 rounded border border-slate-700/30 text-slate-600 text-[9px] font-bold cursor-not-allowed select-none">
+    <div className="flex items-center justify-center py-0.5 px-1.5 rounded border border-slate-700/30 text-slate-600 text-[9px] font-bold cursor-not-allowed select-none">
       {label}
     </div>
   );
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className={`flex-1 flex items-center justify-center py-1 rounded border text-[9px] font-bold text-white transition-all ${accent}`}>
+      className={`flex items-center justify-center py-0.5 px-1.5 rounded border text-[9px] font-bold transition-all ${accent}`}
+      style={{ color: 'white' }}>
       {label}
     </a>
   );
@@ -67,13 +68,15 @@ export const ControlLinks: React.FC = () => (
           {studio.projects.map(id => {
             const links = PROJECT_LINKS[id] ?? { rn: '', module: '' };
             return (
-              <div key={id} className={`border rounded-lg p-1.5 space-y-1 transition-all w-20 ${studio.cardBg}`}>
-                <p className="text-[10px] font-extrabold text-slate-200 text-center">{id}</p>
-                <div className="flex gap-0.5">
+              <div key={id} className={`border rounded-lg transition-all w-20 h-20 relative flex items-center justify-center ${studio.cardBg}`}>
+                <p className="text-[11px] font-extrabold text-slate-200 text-center">{id}</p>
+                <div className="absolute top-1 right-1">
                   <LinkBtn label="RN" url={links.rn}
-                    accent="border-blue-500/40 bg-blue-600 !text-white hover:bg-blue-500" />
+                    accent="border-blue-500/40 bg-blue-600 hover:bg-blue-500" />
+                </div>
+                <div className="absolute bottom-1 right-1">
                   <LinkBtn label="模塊" url={links.module}
-                    accent="border-emerald-500/40 bg-emerald-600 !text-white hover:bg-emerald-500" />
+                    accent="border-emerald-500/40 bg-emerald-600 hover:bg-emerald-500" />
                 </div>
               </div>
             );
