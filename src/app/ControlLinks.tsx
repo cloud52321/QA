@@ -35,14 +35,14 @@ const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {};
 
 const LinkBtn: React.FC<{ label: string; url: string; accent: string }> = ({ label, url, accent }) => {
   if (!url) return (
-    <div className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border border-slate-700/30 text-slate-600 text-[10px] font-bold cursor-not-allowed select-none">
-      <ExternalLink size={9} /> {label}
+    <div className="flex-1 flex items-center justify-center py-1 rounded border border-slate-700/30 text-slate-600 text-[9px] font-bold cursor-not-allowed select-none">
+      {label}
     </div>
   );
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className={`flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg border text-[10px] font-bold transition-all ${accent}`}>
-      <ExternalLink size={9} /> {label}
+      className={`flex-1 flex items-center justify-center py-1 rounded border text-[9px] font-bold text-white transition-all ${accent}`}>
+      {label}
     </a>
   );
 };
@@ -63,27 +63,29 @@ export const ControlLinks: React.FC = () => (
             {studio.name}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-3">
+        <div className="flex flex-wrap gap-2">
           {studio.projects.map(id => {
             const links = PROJECT_LINKS[id] ?? { rn: '', module: '' };
             return (
-              <div key={id} className={`border rounded-xl p-2 space-y-1.5 transition-all aspect-square flex flex-col justify-between ${studio.cardBg}`}>
-                <p className="text-[11px] font-extrabold text-slate-200">{id}</p>
-                <div className="flex gap-1">
+              <div key={id} className={`border rounded-lg p-1.5 space-y-1 transition-all w-20 ${studio.cardBg}`}>
+                <p className="text-[10px] font-extrabold text-slate-200 text-center">{id}</p>
+                <div className="flex gap-0.5">
                   <LinkBtn label="RN" url={links.rn}
-                    accent="border-blue-500/40 bg-blue-500/20 text-white hover:bg-blue-500/30" />
+                    accent="border-blue-500/40 bg-blue-600 !text-white hover:bg-blue-500" />
                   <LinkBtn label="模塊" url={links.module}
-                    accent="border-emerald-500/40 bg-emerald-500/20 text-white hover:bg-emerald-500/30" />
+                    accent="border-emerald-500/40 bg-emerald-600 !text-white hover:bg-emerald-500" />
                 </div>
               </div>
             );
           })}
         </div>
-        {/* 其他相關連結 */}
-        <div className="border border-dashed border-slate-700/40 rounded-xl px-4 py-2.5 text-xs text-slate-600 italic">
-          其他相關連結（待補充）
-        </div>
       </div>
     ))}
+
+    {/* 其他相關連結 */}
+    <div className="bg-slate-900/40 border border-dashed border-slate-700/40 rounded-2xl px-6 py-5">
+      <p className="text-sm font-extrabold text-slate-400 mb-2">其他相關連結</p>
+      <p className="text-xs text-slate-600 italic">待補充</p>
+    </div>
   </div>
 );
