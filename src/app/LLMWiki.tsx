@@ -9,6 +9,7 @@ import {
 import { WikiCardGrid, CategoryCardGrid } from './WikiComponents';
 import { HomeView } from './HomeView';
 import { LinkGenerator } from './LinkGenerator';
+import { BackendLinks } from './BackendLinks';
 import { PayoutCalc } from './PayoutCalc';
 import { RTPConverter } from './RTPConverter';
 
@@ -25,7 +26,7 @@ const LLMWiki: React.FC = () => {
   const [showHome, setShowHome]                 = useState(true);
   const [isToolbox, setIsToolbox]               = useState(false);
   const [selectedStudio, setSelectedStudio]     = useState<string>(studioGroups[0]?.studio ?? '');
-  const [toolPage, setToolPage]                 = useState<'link' | 'calc'>('link');
+  const [toolPage, setToolPage]                 = useState<'link' | 'calc' | 'sandbox' | 'backend' | 'control' | 'log'>('link');
   const [calcTool, setCalcTool]                 = useState<string>('');
 
   const categoryStructure = [...new Set(wikiDocs.map(d => d.section))].map(section => ({
@@ -184,13 +185,33 @@ const LLMWiki: React.FC = () => {
   const renderNav = () => {
     if (isToolbox) return (
       <div className="space-y-1">
-        <button
-          onClick={() => { setToolPage('link'); setCalcTool(''); }}
-          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all ${toolPage === 'link' ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'}`}
-        >
-          <Link2 size={15} className="flex-shrink-0" />
-          <span className="text-[0.85rem] font-medium">直連帳號連結</span>
-        </button>
+        {/* 常用連結 */}
+        <div className="px-3 pt-1 pb-1 flex items-center gap-1.5">
+          <span className="text-yellow-400 text-xs">☆</span>
+          <span className="text-xs font-extrabold text-slate-100 tracking-wide">常用連結</span>
+        </div>
+        <div className="space-y-0.5">
+          {[
+            { key: 'link',     label: '直連帳號連結', icon: <Link2 size={13} /> },
+            { key: 'sandbox',  label: '沙盒帳號連結', icon: <Link2 size={13} /> },
+            { key: 'backend',  label: '後台連結',     icon: <Link2 size={13} /> },
+            { key: 'control',  label: '控版連結',     icon: <Link2 size={13} /> },
+            { key: 'log',      label: 'Log 查詢連結', icon: <Link2 size={13} /> },
+          ].map(item => (
+            <button
+              key={item.key}
+              onClick={() => { setToolPage(item.key as typeof toolPage); setCalcTool(''); }}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all ${
+                toolPage === item.key ? 'bg-blue-600/10 text-blue-400 border border-blue-500/20' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-100'
+              }`}
+            >
+              {item.icon}
+              <span className="text-[0.85rem] font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* 計算工具 */}
         <div className="px-3 pt-3 pb-1 flex items-center gap-1.5">
           <span className="text-yellow-400 text-xs">☆</span>
           <span className="text-xs font-extrabold text-slate-100 tracking-wide">計算工具</span>
@@ -246,6 +267,21 @@ const LLMWiki: React.FC = () => {
             <p className="text-slate-600 text-xs">功能開發中，敬請期待</p>
           </div>
         )}
+      </div>
+    );
+    if (isToolbox && toolPage === 'sandbox') return (
+      <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center gap-3 min-h-[200px]">
+        <h1 className="text-xl font-extrabold text-white tracking-tight">沙盒帳號連結</h1>
+        <p className="text-slate-600 text-xs">功能開發中，敬請期待</p>
+      </div>
+    );
+    if (isToolbox && toolPage === 'backend') return <BackendLinks />;
+    if (isToolbox && (toolPage === 'control' || toolPage === 'log')) return (
+      <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center gap-3 min-h-[200px]">
+        <h1 className="text-xl font-extrabold text-white tracking-tight">
+          {toolPage === 'control' ? '控版連結' : 'Log 查詢連結'}
+        </h1>
+        <p className="text-slate-600 text-xs">功能開發中，敬請期待</p>
       </div>
     );
     if (isToolbox) return <LinkGenerator />;
