@@ -50,7 +50,7 @@ const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {
   },
 };
 
-const btnBase: React.CSSProperties = { color: '#ffffff', fontSize: '18px', padding: '8px 0', borderRadius: '8px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, border: '1px solid #475569', background: '#334155', cursor: 'pointer', textDecoration: 'none' };
+const btnBase: React.CSSProperties = { color: '#ffffff', fontSize: '14px', padding: '8px 0', borderRadius: '8px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, border: '1px solid #475569', background: '#334155', cursor: 'pointer', textDecoration: 'none' };
 const btnDisabled: React.CSSProperties = { ...btnBase, color: '#475569', background: 'transparent', border: '1px solid rgba(51,65,85,0.3)', cursor: 'not-allowed' };
 
 const LinkBtn: React.FC<{ label: string; url: string }> = ({ label, url }) => {
@@ -58,7 +58,7 @@ const LinkBtn: React.FC<{ label: string; url: string }> = ({ label, url }) => {
   return <a href={url} target="_blank" rel="noopener noreferrer" style={btnBase}>{label}</a>;
 };
 
-const otherSectionStyle: React.CSSProperties = { background: 'rgba(30,41,59,0.3)', border: '1px solid rgba(148,163,184,0.3)', borderRadius: '1rem', padding: '1.25rem 1.5rem' };
+const otherSectionStyle: React.CSSProperties = { background: 'rgba(59,130,246,0.04)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: '1rem', padding: '1.25rem 1.5rem' };
 const otherCardStyle: React.CSSProperties = { background: 'rgba(15,23,42,0.6)', border: '1px solid rgba(51,65,85,0.5)', borderRadius: '0.75rem', padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', width: '176px' };
 const otherBtnStyle: React.CSSProperties = { ...btnBase, flex: 'none', width: '100%' };
 const otherBtnFlexStyle: React.CSSProperties = { ...btnBase };
