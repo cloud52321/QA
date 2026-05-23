@@ -105,9 +105,27 @@ export const ControlLinks: React.FC = () => (
     ))}
 
     {/* 其他相關連結 */}
-    <div className="bg-slate-900/40 border border-dashed border-slate-700/40 rounded-2xl px-6 py-5">
-      <p className="text-sm font-extrabold text-slate-400 mb-2">其他相關連結</p>
-      <p className="text-xs text-slate-600 italic">待補充</p>
+    <div className="bg-slate-900/40 border border-slate-800 rounded-2xl px-6 py-5 space-y-4">
+      <p className="text-sm font-extrabold text-slate-300">其他相關連結</p>
+      <div className="flex flex-wrap gap-3">
+        {[
+          { name: "Pipeline", url: "https://pipeline-tool.trevi-stage.cc/", env: "ALL" },
+          { name: "Jenkins", url: "http://10.1.7.132:8080/login?from=%2F", env: "DEV / STG" },
+          { name: "Jenkins", url: "http://10.1.7.132:8080/login?from=%2F", env: "UAT" },
+          { name: "Kuboard", url: "https://kuboard.trevi-stage.cc/login?to=/login", env: "STG" },
+          { name: "Kuboard", url: "https://dev-to-kuboard.reelx.fun/kubernetes/uat/namespace/pp-stage", env: "UAT" },
+          { name: "版號查詢", url: "http://10.1.7.55:8003/", env: "ALL" },
+        ].map((item, i) => (
+          <a key={i} href={item.url} target="_blank" rel="noopener noreferrer"
+            className="group bg-slate-900/60 border border-slate-700/50 hover:border-blue-500/40 hover:bg-slate-800/60 rounded-xl p-4 transition-all flex flex-col gap-2 w-44">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-extrabold text-slate-200 group-hover:text-white transition-colors">{item.name}</p>
+              <ExternalLink size={12} className="text-slate-600 group-hover:text-blue-400 transition-colors" />
+            </div>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-md border bg-slate-800 border-slate-700 text-slate-400 w-fit">{item.env}</span>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 );
