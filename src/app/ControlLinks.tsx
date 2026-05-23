@@ -7,21 +7,21 @@ const STUDIOS = [
   {
     name: '穩贏 WinWin',
     bgStyle: { background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.2)', borderRadius: '1rem', padding: '1.25rem' },
-    badgeStyle: { background: 'rgba(14,165,233,0.1)', color: '#38bdf8', border: '1px solid rgba(14,165,233,0.3)', borderRadius: '0.5rem', padding: '2px 12px', fontSize: '12px', fontWeight: 800 },
+    badgeStyle: { background: 'rgba(14,165,233,0.1)', color: '#38bdf8', border: '1px solid rgba(14,165,233,0.3)', borderRadius: '0.5rem', padding: '2px 12px', fontSize: '16px', fontWeight: 800 },
     cardStyle: { background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.15)', borderRadius: '0.75rem', padding: '12px', width: '128px', display: 'flex', flexDirection: 'column' as const, gap: '10px' },
     projects: ['TG001','TG002'],
   },
   {
     name: '王牌 Ace',
     bgStyle: { background: 'rgba(139,92,246,0.05)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: '1rem', padding: '1.25rem' },
-    badgeStyle: { background: 'rgba(139,92,246,0.1)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)', borderRadius: '0.5rem', padding: '2px 12px', fontSize: '12px', fontWeight: 800 },
+    badgeStyle: { background: 'rgba(139,92,246,0.1)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)', borderRadius: '0.5rem', padding: '2px 12px', fontSize: '16px', fontWeight: 800 },
     cardStyle: { background: 'rgba(139,92,246,0.05)', border: '1px solid rgba(139,92,246,0.15)', borderRadius: '0.75rem', padding: '12px', width: '128px', display: 'flex', flexDirection: 'column' as const, gap: '10px' },
     projects: ['TG102','TG104','TG106','TG108','TG110','TG112','TG126'],
   },
   {
     name: '八方來財',
     bgStyle: { background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: '1rem', padding: '1.25rem' },
-    badgeStyle: { background: 'rgba(245,158,11,0.1)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.3)', borderRadius: '0.5rem', padding: '2px 12px', fontSize: '12px', fontWeight: 800 },
+    badgeStyle: { background: 'rgba(245,158,11,0.1)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.3)', borderRadius: '0.5rem', padding: '2px 12px', fontSize: '16px', fontWeight: 800 },
     cardStyle: { background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.15)', borderRadius: '0.75rem', padding: '12px', width: '128px', display: 'flex', flexDirection: 'column' as const, gap: '10px' },
     projects: ['TG103','TG105','TG107','TG109','TG111','TG113','TG115','TG117','TG119','TG121','TG123','TG125','TG139'],
   },
@@ -50,7 +50,7 @@ const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {
   },
 };
 
-const btnBase: React.CSSProperties = { color: '#ffffff', fontSize: '13px', padding: '6px 0', borderRadius: '8px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, border: '1px solid #475569', background: '#334155', cursor: 'pointer', textDecoration: 'none' };
+const btnBase: React.CSSProperties = { color: '#ffffff', fontSize: '18px', padding: '8px 0', borderRadius: '8px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, border: '1px solid #475569', background: '#334155', cursor: 'pointer', textDecoration: 'none' };
 const btnDisabled: React.CSSProperties = { ...btnBase, color: '#475569', background: 'transparent', border: '1px solid rgba(51,65,85,0.3)', cursor: 'not-allowed' };
 
 const LinkBtn: React.FC<{ label: string; url: string }> = ({ label, url }) => {
@@ -96,7 +96,9 @@ export const ControlLinks: React.FC = () => (
 
     {/* 其他相關連結 */}
     <div style={otherSectionStyle}>
-      <p style={{ fontSize: '14px', fontWeight: 800, color: '#cbd5e1', marginBottom: '12px' }}>其他相關連結</p>
+      <div style={{ marginBottom: '12px' }}>
+        <span style={{ background: 'rgba(100,116,139,0.15)', color: '#94a3b8', border: '1px solid rgba(100,116,139,0.3)', borderRadius: '0.5rem', padding: '4px 16px', fontSize: '16px', fontWeight: 800 }}>其他相關連結</span>
+      </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
         <div style={otherCardStyle}>
           <p style={{ fontSize: '14px', fontWeight: 800, color: '#e2e8f0', textAlign: 'center' }}>Pipeline</p>
