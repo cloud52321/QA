@@ -6,26 +6,23 @@ import { ExternalLink, Layout } from 'lucide-react';
 const STUDIOS = [
   {
     name: '穩贏 WinWin',
-    bg: 'bg-sky-500/5',
-    border: 'border-sky-500/20',
-    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/30',
-    cardBg: 'bg-sky-500/5 border-sky-500/15 hover:border-sky-400/30',
+    bgStyle: { background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.2)' },
+    badgeStyle: { background: 'rgba(14,165,233,0.1)', color: '#38bdf8', border: '1px solid rgba(14,165,233,0.3)' },
+    cardStyle: { background: 'rgba(14,165,233,0.05)', border: '1px solid rgba(14,165,233,0.15)' },
     projects: ['TG001','TG002'],
   },
   {
     name: '王牌 Ace',
-    bg: 'bg-violet-500/5',
-    border: 'border-violet-500/20',
-    badge: 'bg-violet-500/10 text-violet-400 border-violet-500/30',
-    cardBg: 'bg-violet-500/5 border-violet-500/15 hover:border-violet-400/30',
+    bgStyle: { background: 'rgba(139,92,246,0.05)', border: '1px solid rgba(139,92,246,0.2)' },
+    badgeStyle: { background: 'rgba(139,92,246,0.1)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.3)' },
+    cardStyle: { background: 'rgba(139,92,246,0.05)', border: '1px solid rgba(139,92,246,0.15)' },
     projects: ['TG102','TG104','TG106','TG108','TG110','TG112','TG126'],
   },
   {
     name: '八方來財',
-    bg: 'bg-amber-500/5',
-    border: 'border-amber-500/20',
-    badge: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-    cardBg: 'bg-amber-500/5 border-amber-500/15 hover:border-amber-400/30',
+    bgStyle: { background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.2)' },
+    badgeStyle: { background: 'rgba(245,158,11,0.1)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.3)' },
+    cardStyle: { background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.15)' },
     projects: ['TG103','TG105','TG107','TG109','TG111','TG113','TG115','TG117','TG119','TG121','TG123','TG125','TG139'],
   },
 ];
@@ -79,9 +76,9 @@ export const ControlLinks: React.FC = () => (
     </div>
 
     {STUDIOS.map(studio => (
-      <div key={studio.name} className={`${studio.bg} border ${studio.border} rounded-2xl p-5 space-y-4`}>
+      <div key={studio.name} className="rounded-2xl p-5 space-y-4" style={studio.bgStyle}>
         <div className="flex items-center gap-2">
-          <span className={`text-xs font-extrabold px-3 py-1 rounded-lg border ${studio.badge}`}>
+          <span className="text-xs font-extrabold px-3 py-1 rounded-lg" style={studio.badgeStyle}>
             {studio.name}
           </span>
         </div>
@@ -89,7 +86,7 @@ export const ControlLinks: React.FC = () => (
           {studio.projects.map(id => {
             const links = PROJECT_LINKS[id] ?? { rn: '', module: '' };
             return (
-              <div key={id} className={`border rounded-xl p-3 transition-all w-32 flex flex-col gap-2.5 ${studio.cardBg}`}>
+              <div key={id} className="rounded-xl p-3 transition-all w-32 flex flex-col gap-2.5" style={studio.cardStyle}>
                 <p className="text-sm font-extrabold text-slate-200 text-center">{id}</p>
                 <div className="flex gap-2">
                   <LinkBtn label="RN" url={links.rn}
