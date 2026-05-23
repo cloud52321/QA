@@ -105,7 +105,7 @@ export const ControlLinks: React.FC = () => (
     ))}
 
     {/* 其他相關連結 */}
-    <div className="bg-slate-900/40 border border-slate-800 rounded-2xl px-6 py-5 space-y-4">
+    <div className="bg-slate-800/10 border border-slate-600/30 rounded-2xl px-6 py-5 space-y-4">
       <p className="text-sm font-extrabold text-slate-300">其他相關連結</p>
       <div className="flex flex-wrap gap-3">
         {/* Pipeline */}
