@@ -31,7 +31,28 @@ const STUDIOS = [
 ];
 
 // URL 對照表，之後填入
-const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {};
+const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {
+  TG001: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/CzUVwHj0OiJai9kHO7clOtiJg8d',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/BZW5wdUixiCdOTkqGRDlSMSjgRf?sheet=878381&open_in_browser=true',
+  },
+  TG102: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/D64fwI6wgisINOkOUPNlf5F7gps',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/N1H2wXWQti4bc0kiqI0lRiZmgSe?table=tblPO4bJKUg4Npwk&view=vew9gGopfl',
+  },
+  TG104: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/RtGqwqLsEi0pDlkbBRflasg1g6f',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/W6Y9wzEvqis1vzkzULvl1G1Vgvf?table=tbl6Tyv9nAlLNOq7&view=vew9gGopfl',
+  },
+  TG106: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/R42rwOO9Ni7jnlkGNNolzzsCgOd',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/CYLfwn17uifvCAkGNg2leONXgPb?table=tblhU0qizhjj6Kmd&view=vew9gGopfl',
+  },
+  TG108: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/YsUfwI0Q6iXIbgkXf8ol4rg1gcb',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/OrWAwpNrliuOCvkMJb9lZ6oRg2V?table=tblGrUIMqTh2gfQW&view=vew9gGopfl',
+  },
+};
 
 const LinkBtn: React.FC<{ label: string; url: string; isBusy?: boolean; accent: string }> = ({ label, url, accent }) => {
   if (!url) return (
