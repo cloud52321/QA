@@ -56,14 +56,14 @@ const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {
 
 const LinkBtn: React.FC<{ label: string; url: string; isBusy?: boolean; accent: string }> = ({ label, url, accent }) => {
   if (!url) return (
-    <div className="flex-1 flex items-center justify-center py-1.5 rounded-lg border border-slate-700/30 text-[11px] font-bold cursor-not-allowed select-none" style={{color:'#475569'}}>
+    <div className="flex-1 flex items-center justify-center rounded-lg border border-slate-700/30 font-bold cursor-not-allowed select-none" style={{color:'#475569', fontSize:'13px', padding:'6px 0'}}>
       {label}
     </div>
   );
   return (
     <a href={url} target="_blank" rel="noopener noreferrer"
-      className={`flex-1 flex items-center justify-center py-1.5 rounded-lg border text-[11px] font-bold transition-all ${accent}`}
-      style={{color:'#ffffff'}}>
+      className={`flex-1 flex items-center justify-center rounded-lg border font-bold transition-all ${accent}`}
+      style={{color:'#ffffff', fontSize:'13px', padding:'6px 0'}}>
       {label}
     </a>
   );
