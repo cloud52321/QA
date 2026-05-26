@@ -48,6 +48,18 @@ const PROJECT_LINKS: Record<string, { rn: string; module: string }> = {
     rn: 'https://trevi-technology.sg.larksuite.com/wiki/YsUfwI0Q6iXIbgkXf8ol4rg1gcb',
     module: 'https://trevi-technology.sg.larksuite.com/wiki/OrWAwpNrliuOCvkMJb9lZ6oRg2V?table=tblGrUIMqTh2gfQW&view=vew9gGopfl',
   },
+  TG110: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/RNCiwpoFmiqHTkkt63elxZhlghc',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/CBH4wkrzAitQXqkerknliAzbgAg?table=tbl9X0Ot6uCzplKL&view=vew9gGopfl',
+  },
+  TG112: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/Nllpwx9CPiXaO3kK08flEDkbgZc',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/MeW2wVjGHi9B5UkKQVllt5jYg91?table=tblv3IUSiEhueE5H',
+  },
+  TG126: {
+    rn: 'https://trevi-technology.sg.larksuite.com/wiki/RBNfwVtj8iLB50kuqqjltS65gud',
+    module: 'https://trevi-technology.sg.larksuite.com/wiki/Sm0SwTMAXi6Zjwki7xwlDkVrgkv?table=tblQDC37jVqoCbdc&view=vew9gGopfl',
+  },
 };
 
 const btnBase: React.CSSProperties = { color: '#ffffff', fontSize: '14px', padding: '8px 0', borderRadius: '8px', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1, border: '1px solid #475569', background: '#334155', cursor: 'pointer', textDecoration: 'none' };
