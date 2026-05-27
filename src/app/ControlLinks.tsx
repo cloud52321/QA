@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { getTheme } from './themeTokens';
 import { Layout } from 'lucide-react';
 
 const STUDIOS = [
@@ -75,13 +76,15 @@ const otherCardStyle: React.CSSProperties = { background: 'rgba(15,23,42,0.6)', 
 const otherBtnStyle: React.CSSProperties = { ...btnBase, flex: 'none', width: '100%' };
 const otherBtnFlexStyle: React.CSSProperties = { ...btnBase };
 
-export const ControlLinks: React.FC = () => (
+export const ControlLinks: React.FC<{ isDark?: boolean }> = ({ isDark = true }) => {
+  const T = getTheme(isDark);
+  return (
   <div className="space-y-6">
     <div className="flex items-center gap-3">
       <div style={{ width: 32, height: 32, background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Layout size={15} color="#60a5fa" />
       </div>
-      <h1 className="text-2xl font-extrabold text-white tracking-tight">控版連結</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: T.text }}>控版連結</h1>
     </div>
 
     {STUDIOS.map(studio => (
@@ -137,4 +140,6 @@ export const ControlLinks: React.FC = () => (
       </div>
     </div>
   </div>
-);
+  );
+};
+
