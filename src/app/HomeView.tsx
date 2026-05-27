@@ -623,7 +623,7 @@ export const HomeView: React.FC<{ isDark?: boolean }> = ({ isDark = true }) => {
                         {item.text}
                         {'link' in item && item.link && (
                           <a href={item.link.url} target="_blank" rel="noopener noreferrer"
-                            style={{ color: T.link, textDecoration: 'underline', textUnderlineOffset: 2, marginLeft: 4, fontSize: '0.75rem' }}>
+                            style={{ color: T.textLink, textDecoration: 'underline', textUnderlineOffset: 2, marginLeft: 4, fontSize: '0.75rem' }}>
                             {item.link.label}
                           </a>
                         )}
@@ -714,7 +714,7 @@ export const HomeView: React.FC<{ isDark?: boolean }> = ({ isDark = true }) => {
                             <td key={ci} style={{ padding: '10px 16px', border: `1px solid ${T.tableBorder}`, verticalAlign: 'top', textAlign: 'center', background: T.tableCellBg }}>
                               {cell ? (
                                 <a href={cell.url} target="_blank" rel="noopener noreferrer"
-                                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: T.link, textDecoration: 'none', fontSize: '0.75rem', lineHeight: 1.5 }}>
+                                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: T.textLink, textDecoration: 'none', fontSize: '0.75rem', lineHeight: 1.5 }}>
                                   <span style={{ color: T.textFaint, flexShrink: 0 }}>▣</span>
                                   {cell.label}
                                 </a>
@@ -752,7 +752,7 @@ export const HomeView: React.FC<{ isDark?: boolean }> = ({ isDark = true }) => {
                               {item.text}
                               {item.links && item.links.map((lk, li) => (
                                 <a key={li} href={lk.url} target="_blank" rel="noopener noreferrer"
-                                  style={{ color: T.link, textDecoration: 'underline', textUnderlineOffset: 2, marginLeft: 4, fontSize: '0.75rem' }}>
+                                  style={{ color: T.textLink, textDecoration: 'underline', textUnderlineOffset: 2, marginLeft: 4, fontSize: '0.75rem' }}>
                                   {lk.label}
                                 </a>
                               ))}
