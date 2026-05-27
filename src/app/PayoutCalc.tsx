@@ -450,115 +450,7 @@ const PlaceholderCalc: React.FC<{ project: string }> = ({ project }) => (
 
 // ─── PayoutCalc ───────────────────────────────────────────────────────────────
 
-const PROJECT_ICON: Record<string, string> = {
-  TG102: '🔴', TG104: '⚡', TG112: '🃏', TG114: '🛺',
-  TG116: '🧙', TG118: '🪙', TG120: '🧙', TG122: '🪙', TG124: '🪙',
-  TG126: '♠️', TG128: '🧙', TG130: '🪙',
-  TG103: '🍒', TG105: '🍿', TG107: '🧙', TG109: '🎯',
-  TG115: '🏀', TG117: '💥',
-  TG139: '💯', TG119: '⚽', TG121: '🚀', TG123: '🎈',
-};
-
-const PROJECT_SVG_ICON: Record<string, React.ReactNode> = {
-  TG001: (
-    <svg width="16" height="16" viewBox="0 0 88 100">
-      <path d="M8,20 C14,4 22,12 18,26" fill="none" stroke="#92400e" strokeWidth="4" strokeLinecap="round"/>
-      <circle cx="18" cy="26" r="5" fill="#fde047"/>
-      <line x1="18" y1="26" x2="26" y2="18" stroke="#fde047" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="18" y1="26" x2="28" y2="28" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="44" cy="58" r="36" fill="#111827" stroke="#374151" strokeWidth="2"/>
-      <circle cx="34" cy="46" r="8" fill="white" opacity="0.1"/>
-      <rect x="38" y="20" width="12" height="8" rx="3" fill="#374151"/>
-    </svg>
-  ),
-  TG002: (
-    <svg width="16" height="16" viewBox="0 0 88 88">
-      <circle cx="44" cy="44" r="42" fill="#ea580c"/>
-      <line x1="44" y1="2" x2="44" y2="86" stroke="#1c1917" strokeWidth="3"/>
-      <line x1="2" y1="44" x2="86" y2="44" stroke="#1c1917" strokeWidth="3"/>
-      <path d="M44,2 C20,16 20,72 44,86" fill="none" stroke="#1c1917" strokeWidth="3"/>
-      <path d="M44,2 C68,16 68,72 44,86" fill="none" stroke="#1c1917" strokeWidth="3"/>
-      <circle cx="44" cy="44" r="42" fill="none" stroke="#c2410c" strokeWidth="2"/>
-      <ellipse cx="32" cy="28" rx="10" ry="6" fill="white" opacity="0.18" transform="rotate(-25,32,28)"/>
-    </svg>
-  ),
-  TG110: (
-    <svg width="16" height="16" viewBox="0 0 88 88">
-      <ellipse cx="48" cy="48" rx="38" ry="38" fill="#92400e" opacity="0.4"/>
-      <circle cx="44" cy="44" r="38" fill="#f59e0b"/>
-      <circle cx="44" cy="44" r="38" fill="none" stroke="#d97706" strokeWidth="4"/>
-      <circle cx="44" cy="44" r="28" fill="#fbbf24" stroke="#f59e0b" strokeWidth="2"/>
-      <text x="45" y="56" textAnchor="middle" fontFamily="Arial Black, sans-serif" fontSize="140" fontWeight="900" fill="#78350f">₱</text>
-      <ellipse cx="30" cy="28" rx="10" ry="6" fill="white" opacity="0.25" transform="rotate(-35,30,28)"/>
-    </svg>
-  ),
-  TG106: (
-    <svg width="16" height="16" viewBox="0 0 88 88">
-      <defs><radialGradient id="bs2" cx="35%" cy="30%" r="60%"><stop offset="0%" stopColor="white" stopOpacity="0.4"/><stop offset="100%" stopColor="white" stopOpacity="0"/></radialGradient></defs>
-      <circle cx="44" cy="44" r="42" fill="#1a1a2e" stroke="#3b3b6e" strokeWidth="2"/>
-      <circle cx="44" cy="44" r="42" fill="url(#bs2)"/>
-      <circle cx="44" cy="44" r="18" fill="white"/>
-      <text x="44" y="50" textAnchor="middle" fontFamily="serif" fontSize="18" fontWeight="700" fill="#111">8</text>
-    </svg>
-  ),
-  TG108: (
-    <svg width="16" height="16" viewBox="0 0 88 76">
-      <ellipse cx="44" cy="38" rx="42" ry="36" fill="#f9a8c9" stroke="#e879a0" strokeWidth="1"/>
-      <ellipse cx="44" cy="46" rx="25" ry="19" fill="#f472b6" stroke="#db2777" strokeWidth="0.5"/>
-      <ellipse cx="35" cy="48" rx="7" ry="8" fill="#c2185b"/>
-      <ellipse cx="53" cy="48" rx="7" ry="8" fill="#c2185b"/>
-      <circle cx="28" cy="24" r="5" fill="#1a1a1a"/>
-      <circle cx="60" cy="24" r="5" fill="#1a1a1a"/>
-    </svg>
-  ),
-  TG111: (
-    <svg width="16" height="16" viewBox="0 0 88 96">
-      <circle cx="30" cy="18" r="9" fill="#ef4444"/><circle cx="18" cy="12" r="10" fill="#ef4444"/><circle cx="6" cy="18" r="9" fill="#ef4444"/>
-      <ellipse cx="30" cy="52" rx="30" ry="32" fill="white" stroke="#f3f4f6" strokeWidth="1.5"/>
-      <path d="M4,44 L-16,48 L4,54 Z" fill="#f59e0b"/>
-      <ellipse cx="2" cy="66" rx="8" ry="10" fill="#ef4444"/>
-      <circle cx="42" cy="44" r="11" fill="#1a1a1a"/><circle cx="39" cy="41" r="4" fill="white"/>
-    </svg>
-  ),
-  TG113: (
-    <svg width="16" height="16" viewBox="0 0 88 96">
-      <rect x="4" y="14" width="12" height="16" rx="2" fill="#7c6fcd"/><rect x="22" y="14" width="12" height="16" rx="2" fill="#7c6fcd"/>
-      <rect x="40" y="14" width="12" height="16" rx="2" fill="#7c6fcd"/><rect x="58" y="14" width="12" height="16" rx="2" fill="#7c6fcd"/>
-      <rect x="2" y="28" width="76" height="60" rx="4" fill="#9b8fe0"/>
-      <path d="M30,88 L30,60 Q30,48 44,48 Q58,48 58,60 L58,88 Z" fill="#3730a3"/>
-      <rect x="8" y="38" width="18" height="18" rx="3" fill="#c4b5fd"/><rect x="54" y="38" width="18" height="18" rx="3" fill="#c4b5fd"/>
-      <line x1="44" x2="44" y1="28" y2="6" stroke="#e11d48" strokeWidth="2"/>
-      <path d="M44,6 L60,14 L44,22 Z" fill="#e11d48"/>
-    </svg>
-  ),
-  TG125: (
-    <svg width="16" height="16" viewBox="0 0 88 100">
-      <path d="M16,58 Q10,88 20,96 L44,80 L68,96 Q78,88 72,58 Z" fill="#4a1d6e"/>
-      <circle cx="44" cy="44" r="32" fill="#fde8d0"/>
-      <path d="M16,52 Q24,16 44,14 Q64,16 72,52 Q64,40 44,38 Q24,40 16,52Z" fill="#3d2c6e"/>
-      <circle cx="34" cy="44" r="6" fill="#ff3366"/><circle cx="54" cy="44" r="6" fill="#ff3366"/>
-      <rect x="30" y="58" width="6" height="10" rx="3" fill="white"/><rect x="46" y="58" width="6" height="10" rx="3" fill="white"/>
-    </svg>
-  ),
-  TG107: (
-    <svg width="16" height="16" viewBox="0 0 88 100">
-      <path d="M16,58 Q12,90 22,96 L44,80 L66,96 Q76,90 72,58 Z" fill="#4c1d95"/>
-      <circle cx="44" cy="44" r="32" fill="#3730a3"/>
-      <path d="M18,48 Q20,34 44,34 Q68,34 70,48 Q68,58 44,58 Q20,58 18,48Z" fill="#d4956a"/>
-      <circle cx="32" cy="46" r="5" fill="#1a1a1a"/><circle cx="56" cy="46" r="5" fill="#1a1a1a"/>
-      <rect x="38" y="14" width="12" height="8" rx="3" fill="#a855f7"/>
-      <path d="M38,22 L28,34 M50,22 L60,34" stroke="#a855f7" strokeWidth="3"/>
-    </svg>
-  ),
-};
-
-const ProjectIcon: React.FC<{ id: string }> = ({ id }) => {
-  if (PROJECT_SVG_ICON[id]) return <span className="flex-shrink-0 flex items-center">{PROJECT_SVG_ICON[id]}</span>;
-  if (PROJECT_ICON[id]) return <span className="text-sm leading-none">{PROJECT_ICON[id]}</span>;
-  return null;
-};
-
-export const PayoutCalc: React.FC = () => {
+export const PayoutCalc: React.FC<{ isDark?: boolean }> = ({ isDark = true }) => {
   const studios = Object.keys(studioProjects);
   const [activeStudio, setActiveStudio] = useState(studios[0]);
   const [activeProject, setActiveProject] = useState(studioProjects[studios[0]][0]);
@@ -575,7 +467,7 @@ export const PayoutCalc: React.FC = () => {
         {studios.map(s => (
           <button key={s} onClick={() => handleStudio(s)}
             className={`py-1.5 px-4 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
-              activeStudio === s ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-500 hover:text-slate-300'
+              activeStudio === s ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/40' : 'text-slate-500 hover:text-slate-300'
             }`}>{s}</button>
         ))}
       </div>
@@ -583,14 +475,11 @@ export const PayoutCalc: React.FC = () => {
         <div className="flex flex-wrap gap-2">
           {studioProjects[activeStudio].map(p => (
             <button key={p} onClick={() => setActiveProject(p)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                 activeProject === p
-                  ? 'bg-amber-500/20 text-amber-300 font-bold border border-amber-400/40'
+                  ? 'bg-blue-500/20 text-blue-200 font-bold border border-blue-400/30'
                   : 'text-slate-500 bg-slate-900/40 hover:bg-slate-800/40 hover:text-slate-300 border border-slate-800'
-              }`}>
-              <ProjectIcon id={p} />
-              {p}
-            </button>
+              }`}>{p}</button>
           ))}
         </div>
         <div className="bg-slate-900/30 border border-slate-800 rounded-2xl p-6">
