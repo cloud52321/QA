@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { apiExampleImg, harExampleImg, itExampleImg } from './imageAssets';
+import { getTheme, GROUP_THEME } from './themeTokens';
 
 const routineAnnouncement = {
   title: '例行公事與會議',
@@ -553,7 +554,8 @@ const ListItems: React.FC<{ items: ListItemData[] }> = ({ items }) => {
   );
 };
 
-const CopyCell: React.FC<{ value: string; note?: string }> = ({ value, note }) => {
+const CopyCell: React.FC<{ value: string; note?: string; isDark?: boolean }> = ({ value, note, isDark = true }) => {
+  const T = getTheme(isDark);
   const [copied, setCopied] = useState(false);
   const copy = () => {
     navigator.clipboard.writeText(value).then(() => {
@@ -562,15 +564,17 @@ const CopyCell: React.FC<{ value: string; note?: string }> = ({ value, note }) =
     });
   };
   return (
-    <button onClick={copy} className="flex items-center gap-2 group text-left" title="點擊複製">
-      <code
-        style={{ backgroundColor: copied ? 'rgba(16,185,129,0.2)' : 'rgba(99,102,241,0.35)', color: copied ? '#6ee7b7' : '#c7d2fe' }}
-        className="text-sm font-mono px-2.5 py-1 rounded-lg select-all transition-colors"
-      >
+    <button onClick={copy} style={{ display: 'flex', alignItems: 'center', gap: 8, textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer' }} title="點擊複製">
+      <code style={{
+        backgroundColor: copied ? T.copySuccessBg : T.copyCodeBg,
+        color: copied ? T.copySuccessColor : T.copyCodeColor,
+        fontSize: '0.875rem', fontFamily: 'monospace', padding: '4px 10px', borderRadius: '0.5rem', userSelect: 'all',
+        border: T.copyCodeBorder,
+      }}>
         {value}
       </code>
-      {note && <span className="text-xs text-slate-500">{note}</span>}
-      <span className={`text-[10px] font-bold transition-colors flex-shrink-0 ${copied ? 'text-emerald-400' : 'text-slate-600 group-hover:text-slate-400'}`}>
+      {note && <span style={{ fontSize: '0.75rem', color: T.textMuted }}>{note}</span>}
+      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: copied ? T.copySuccessColor : T.copyBtnColor, flexShrink: 0 }}>
         {copied ? '✓ 已複製' : '複製'}
       </span>
     </button>
@@ -579,97 +583,125 @@ const CopyCell: React.FC<{ value: string; note?: string }> = ({ value, note }) =
 
 // ─── HomeView ─────────────────────────────────────────────────────────────────
 
-export const HomeView: React.FC = () => {
+export const HomeView: React.FC<{ isDark?: boolean }> = ({ isDark = true }) => {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const m = isDark ? 'dark' : 'light';
+  const T = getTheme(isDark);
 
   return (
-    <div className="space-y-8">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
 
       {/* ── 例行公事與會議 ── */}
-      <div className="rounded-2xl border border-slate-700/50 bg-[#0d1220] overflow-hidden">
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-700/40 bg-slate-800/20">
-          <span className="text-xl leading-none">📌</span>
-          <h2 className="text-base font-extrabold text-white tracking-tight">{routineAnnouncement.title}</h2>
+      <div>
+        {/* 標題 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+          <span style={{ fontSize: '1rem' }}>📌</span>
+          <h2 style={{ fontSize: '1rem', fontWeight: 800, color: T.textAmber, letterSpacing: '-0.01em' }}>
+            {routineAnnouncement.title}
+          </h2>
         </div>
-        <div className="grid grid-cols-2 divide-x divide-y divide-slate-800/50">
-          {routineAnnouncement.groups.map(group => (
-            <div key={group.freq} className="px-6 py-5 space-y-3 bg-[#0b0f1c]">
-              <div className="flex items-center gap-2">
-                <span className="text-lg leading-none">{group.emoji}</span>
-                <span className="text-sm font-extrabold text-slate-100">{group.freq}</span>
+        {/* 2x2 卡片 */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {routineAnnouncement.groups.map((group, gi) => {
+            const theme = GROUP_THEME[gi] ?? GROUP_THEME[0];
+            return (
+              <div key={group.freq} style={{
+                background: theme.bg[m],
+                border: `1px solid ${theme.border[m]}`,
+                borderRadius: '1rem',
+                padding: '1.25rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                  <span style={{ fontSize: '1.25rem', lineHeight: 1 }}>{group.emoji}</span>
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: theme.title[m] }}>{group.freq}</span>
+                </div>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingLeft: 4 }}>
+                  {group.items.map((item, i) => (
+                    <li key={i} style={{ display: 'flex', gap: 8, fontSize: '0.8125rem', color: theme.text[m], lineHeight: 1.6 }}>
+                      <span style={{ color: theme.bullet[m], flexShrink: 0, marginTop: 2 }}>•</span>
+                      <span>
+                        {item.text}
+                        {'link' in item && item.link && (
+                          <a href={item.link.url} target="_blank" rel="noopener noreferrer"
+                            style={{ color: T.link, textDecoration: 'underline', textUnderlineOffset: 2, marginLeft: 4, fontSize: '0.75rem' }}>
+                            {item.link.label}
+                          </a>
+                        )}
+                        {'note' in item && item.note && (
+                          <span style={{ display: 'block', fontSize: '0.6875rem', color: T.textFaint, marginTop: 2 }}>{item.note}</span>
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-2 pl-1">
-                {group.items.map((item, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-slate-400 leading-relaxed">
-                    <span className="text-cyan-500 flex-shrink-0 mt-0.5">•</span>
-                    <span>
-                      {item.text}
-                      {'link' in item && item.link && (
-                        <a href={item.link.url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 ml-1 text-xs">{item.link.label}</a>
-                      )}
-                      {'note' in item && item.note && (
-                        <><br /><span className="text-slate-600 text-xs mt-0.5 block">{item.note}</span></>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       {/* ── 所有公告事項 ── */}
-      <div className="space-y-3">
-        <p className="text-base font-extrabold text-white tracking-wide px-1">所有公告事項</p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <p style={{ fontSize: '1rem', fontWeight: 800, color: T.text, letterSpacing: '0.01em', paddingLeft: 4 }}>所有公告事項</p>
 
         {announcements.map((ann, idx) => {
           const isOpen = openIdx === idx;
           return (
-            <div key={idx} className={`rounded-2xl border overflow-hidden transition-all ${isOpen ? 'border-slate-600/70' : 'border-slate-700/40'} bg-[#0d1220]`}>
+            <div key={idx} style={{
+              borderRadius: '1rem',
+              border: `1px solid ${isOpen ? T.accordOpenBorder : T.accordBorder}`,
+              overflow: 'hidden',
+              background: T.accordBg,
+              transition: 'border-color 0.15s',
+            }}>
               <button
                 onClick={() => setOpenIdx(isOpen ? null : idx)}
-                className={`w-full flex items-center justify-between px-6 py-4 text-left transition-colors ${isOpen ? 'bg-slate-800/40' : 'hover:bg-slate-800/20'}`}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '16px 20px', textAlign: 'left', cursor: 'pointer', border: 'none',
+                  background: isOpen ? T.accordOpenBg : 'transparent',
+                  transition: 'background 0.15s',
+                }}
+                onMouseEnter={e => { if (!isOpen) (e.currentTarget as HTMLElement).style.background = T.accordHover; }}
+                onMouseLeave={e => { if (!isOpen) (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
               >
-                <div className="flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
-                  <span className="text-sm font-extrabold text-white">{ann.title}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#f59e0b', flexShrink: 0, display: 'inline-block' }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: T.text }}>{ann.title}</span>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                  className={`text-slate-500 transition-transform duration-200 flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
+                  style={{ color: T.textMuted, transition: 'transform 0.2s', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', flexShrink: 0 }}>
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
 
               {isOpen && ann.type === 'account' && (
-                <div className="p-5 bg-slate-900/20">
-                  <div className="grid grid-cols-2 gap-4">
-                    {ann.cards.map((card, ci) => (
-                      <div key={ci} className="bg-[#0b0f1c] border border-slate-700/50 rounded-xl overflow-hidden">
-                        <div className="px-4 py-3 border-b border-slate-700/40 bg-slate-800/30">
-                          <span className="text-sm font-extrabold text-slate-100 tracking-wide">{card.label}</span>
-                        </div>
-                        <div className="divide-y divide-slate-800/60">
-                          {card.rows.map((row, ri) => (
-                            <div key={ri} className="flex items-center gap-4 px-4 py-3">
-                              <span className="text-xs font-bold text-slate-500 w-10 flex-shrink-0">{row.key}</span>
-                              <CopyCell value={row.copyValue} note={row.note} />
-                            </div>
-                          ))}
-                        </div>
+                <div style={{ padding: 20, background: T.bgInner, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                  {ann.cards.map((card, ci) => (
+                    <div key={ci} style={{ background: T.bgCard, border: `1px solid ${T.border}`, borderRadius: '0.75rem', overflow: 'hidden' }}>
+                      <div style={{ padding: '12px 16px', borderBottom: `1px solid ${T.border}`, background: T.cardHeaderBg }}>
+                        <span style={{ fontSize: '0.875rem', fontWeight: 800, color: T.text }}>{card.label}</span>
                       </div>
-                    ))}
-                  </div>
+                      <div>
+                        {card.rows.map((row, ri) => (
+                          <div key={ri} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '10px 16px', borderBottom: ri < card.rows.length - 1 ? `1px solid ${T.divider}` : 'none' }}>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: T.textFaint, width: 40, flexShrink: 0 }}>{row.key}</span>
+                            <CopyCell value={row.copyValue} note={row.note} isDark={isDark} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
 
               {isOpen && ann.type === 'table' && (
-                <div className="p-5 bg-slate-900/20 overflow-x-auto">
-                  <table className="w-full border-collapse text-sm">
+                <div style={{ padding: 20, background: T.bgInner, overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
                     <thead>
                       <tr>
                         {ann.columns.map(col => (
-                          <th key={col} className="px-4 py-2.5 text-center text-xs font-extrabold text-slate-300 bg-slate-800/60 border border-slate-700/50 first:rounded-tl-lg last:rounded-tr-lg">
+                          <th key={col} style={{ padding: '10px 16px', textAlign: 'center', fontSize: '0.75rem', fontWeight: 800, color: T.tableHeadText, background: T.tableHeadBg, border: `1px solid ${T.tableBorder}` }}>
                             {col}
                           </th>
                         ))}
@@ -679,11 +711,11 @@ export const HomeView: React.FC = () => {
                       {ann.rows.map((row, ri) => (
                         <tr key={ri}>
                           {row.map((cell, ci) => (
-                            <td key={ci} className="px-4 py-3 border border-slate-800/40 align-top text-center">
+                            <td key={ci} style={{ padding: '10px 16px', border: `1px solid ${T.tableBorder}`, verticalAlign: 'top', textAlign: 'center', background: T.tableCellBg }}>
                               {cell ? (
                                 <a href={cell.url} target="_blank" rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition-colors text-xs leading-relaxed">
-                                  <span className="text-slate-500 flex-shrink-0">▣</span>
+                                  style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: T.link, textDecoration: 'none', fontSize: '0.75rem', lineHeight: 1.5 }}>
+                                  <span style={{ color: T.textFaint, flexShrink: 0 }}>▣</span>
                                   {cell.label}
                                 </a>
                               ) : null}
@@ -697,35 +729,35 @@ export const HomeView: React.FC = () => {
               )}
 
               {isOpen && ann.type === 'list' && (
-                <div className="p-5 bg-slate-900/20 space-y-3">
+                <div style={{ padding: 20, background: T.bgInner }} className="space-y-3">
                   <ListItems items={ann.items} />
                 </div>
               )}
 
               {isOpen && ann.type === 'tools' && (
-                <div className="p-5 bg-slate-900/20 space-y-6">
+                <div style={{ padding: 20, background: T.bgInner, display: 'flex', flexDirection: 'column', gap: 24 }}>
                   {ann.sections.map((sec, si) => (
-                    <div key={si} className="space-y-2">
+                    <div key={si} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                       {sec.heading && (
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="text-xs font-extrabold text-cyan-400 uppercase tracking-widest">{sec.heading}</span>
-                          <div className="flex-1 h-px bg-slate-700/50" />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: T.textAmber, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{sec.heading}</span>
+                          <div style={{ flex: 1, height: 1, background: T.divider }} />
                         </div>
                       )}
-                      <ul className="space-y-2 pl-1">
+                      <ul style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingLeft: 4 }}>
                         {sec.items.map((item, ii) => (
-                          <li key={ii} className="flex gap-2 text-sm text-slate-400 leading-relaxed">
-                            <span className="text-cyan-500 flex-shrink-0 mt-0.5">•</span>
+                          <li key={ii} style={{ display: 'flex', gap: 8, fontSize: '0.875rem', color: T.textMuted, lineHeight: 1.6 }}>
+                            <span style={{ color: '#f59e0b', flexShrink: 0, marginTop: 2 }}>•</span>
                             <span>
                               {item.text}
                               {item.links && item.links.map((lk, li) => (
                                 <a key={li} href={lk.url} target="_blank" rel="noopener noreferrer"
-                                  className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 ml-1 text-xs">
+                                  style={{ color: T.link, textDecoration: 'underline', textUnderlineOffset: 2, marginLeft: 4, fontSize: '0.75rem' }}>
                                   {lk.label}
                                 </a>
                               ))}
                               {'note' in item && item.note && (
-                                <span className="text-slate-600 text-xs ml-1">（{item.note}）</span>
+                                <span style={{ fontSize: '0.75rem', color: T.textFaint, marginLeft: 4 }}>（{item.note}）</span>
                               )}
                             </span>
                           </li>
